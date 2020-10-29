@@ -1,0 +1,59 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+
+	<xsd:complexType name="user">
+		<xsd:sequence>
+			<xsd:element name="fname" type="xsd:string"></xsd:element>
+			<xsd:element name="lname" type="xsd:string"></xsd:element>
+			<xsd:element name="membershipId" type="xsd:int"
+				minOccurs="0"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+
+
+
+
+	<xsd:complexType name="address">
+		<xsd:sequence>
+			<xsd:element name="streetName" type="xsd:string"></xsd:element>
+			<xsd:element name="streetNumber" type="xsd:int"></xsd:element>
+			<xsd:element name="zipCode" type="xsd:string"></xsd:element>
+			<xsd:element name="Country" type="xsd:string"></xsd:element>
+		</xsd:sequence>
+
+	</xsd:complexType>
+
+
+	<xsd:element name="user" type="user"></xsd:element>
+	<xsd:element name="address" type="address"></xsd:element>
+	<xsd:element name="ccinfo" type="ccinfo"></xsd:element>
+
+
+	<xsd:element name="freeTrialPlan">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="user" type="user"></xsd:element>
+				<xsd:element name="address" type="address"></xsd:element>
+			</xsd:sequence>
+
+		</xsd:complexType>
+
+
+	</xsd:element>
+
+	<xsd:complexType name="ccinfo">
+		<xsd:sequence>
+			<xsd:element name="number" type="xsd:string" />
+			<xsd:element name="validityDate" type="xsd:string" />
+			<xsd:element name="ccv" type="xsd:int" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+
+
+
+</xsd:schema>
