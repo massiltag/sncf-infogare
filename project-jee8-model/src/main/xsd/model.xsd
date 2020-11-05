@@ -1,9 +1,32 @@
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
+
+
+	<xsd:element name="user" type="user"></xsd:element>
+	<xsd:element name="address" type="address"></xsd:element>
+	<xsd:element name="ccinfo" type="ccinfo"></xsd:element>
+	<xsd:element name="invoice" type="invoice"></xsd:element>
+	<xsd:element name="invoiceWrapper" type="invoiceWrapper"></xsd:element>
+
+	<xsd:simpleType name="SimpleDate">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<xjc:javaType name="java.time.LocalDateTime"
+
+					adapter="fr.pantheonsorbonne.ufr27.miage.model.jaxb.LocalDateTimeAdapter" />
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern
+				value="[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}" />
+		</xsd:restriction>
+	</xsd:simpleType>
 
 
 
 	<xsd:complexType name="user">
 		<xsd:sequence>
+			<xsd:element name="id" type="xsd:int"></xsd:element>
 			<xsd:element name="fname" type="xsd:string"></xsd:element>
 			<xsd:element name="lname" type="xsd:string"></xsd:element>
 			<xsd:element name="membershipId" type="xsd:int"
@@ -27,9 +50,6 @@
 	</xsd:complexType>
 
 
-	<xsd:element name="user" type="user"></xsd:element>
-	<xsd:element name="address" type="address"></xsd:element>
-	<xsd:element name="ccinfo" type="ccinfo"></xsd:element>
 
 
 	<xsd:element name="freeTrialPlan">
@@ -50,6 +70,25 @@
 			<xsd:element name="validityDate" type="xsd:string" />
 			<xsd:element name="ccv" type="xsd:int" />
 		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="invoiceWrapper">
+		<xsd:sequence>
+			<xsd:element name="invoices" type="invoice"
+				maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+
+	</xsd:complexType>
+	<xsd:complexType name="invoice">
+		<xsd:sequence>
+
+			<xsd:element name="date" type="SimpleDate">
+			</xsd:element>
+			<xsd:element name="contractId" type="xsd:int"></xsd:element>
+			<xsd:element name="paid" type="xsd:boolean"></xsd:element>
+		</xsd:sequence>
+
 	</xsd:complexType>
 
 

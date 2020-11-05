@@ -5,16 +5,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class ExceptionMapper implements javax.ws.rs.ext.ExceptionMapper<Exception> {
+public class ExceptionMapper implements javax.ws.rs.ext.ExceptionMapper<WebApplicationException> {
 	@Override
-	public Response toResponse(Exception exception) {
+	public Response toResponse(WebApplicationException exception) {
 		exception.printStackTrace();
-		if (exception instanceof WebApplicationException) {
-			WebApplicationException wae = (WebApplicationException) exception;
-			return Response.status(wae.getResponse().getStatus()).build();
-		}
-		else {
-			return Response.status(500).build();
-		}
-	}		
+		return exception.getResponse();
+	}
 }

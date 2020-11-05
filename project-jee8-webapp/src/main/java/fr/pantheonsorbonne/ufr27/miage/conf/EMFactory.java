@@ -22,12 +22,6 @@ public class EMFactory implements Supplier<EntityManager> {
 
 	public EntityManager get() {
 		final EntityManager em = emf.createEntityManager();
-//		this.closeService.add(new Closeable() {
-//			@Override
-//			public void close() {
-//				em.close();
-//			}
-//		});
 		return em;
 	}
 

@@ -9,7 +9,7 @@
 		<properties>
 		
 
-			<property name="javax.persistence.jdbc.url" value="jdbc:h2:~/test;IFEXISTS=FALSE" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:h2:~/test" />
 			<property name="javax.persistence.jdbc.user" value="SA" />
 			<property name="javax.persistence.jdbc.password" value="" />
 

@@ -10,6 +10,8 @@
 	<modules>
 		<module>project-jee8-webapp</module>
 		<module>project-jee8-model</module>
+    <module>project-jee8-rest-client</module>
+    <module>project-jee8-jms-subscriber</module>
   </modules>
 
 	<dependencyManagement>

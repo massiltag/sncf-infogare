@@ -4,12 +4,12 @@
 	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
 	jxb:extensionBindingPrefixes="xjc"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xs:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd"
-   >
+	xs:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd">
 	<jxb:bindings schemaLocation="../xsd/model.xsd"
 		node="/xs:schema">
 		<jxb:globalBindings>
 			<xjc:simple />
 		</jxb:globalBindings>
+
 	</jxb:bindings>
 </jxb:bindings>

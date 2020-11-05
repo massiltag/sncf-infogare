@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.ManagedBean;
@@ -19,7 +20,7 @@ public class InvoiceDAO {
 	@Inject
 	EntityManager em;
 
-	public Collection<Invoice> getUnpaiedInvoices(int userId) throws NoSuchUserException {
+	public List<Invoice> getUnpaiedInvoices(int userId) throws NoSuchUserException {
 
 		Customer customer = em.find(Customer.class, userId);
 		if (customer == null) {
@@ -30,7 +31,7 @@ public class InvoiceDAO {
 				map(Contract::getInvoices).//
 				flatMap(Collection::stream).//
 				filter(i -> !i.isPayed()).//
-				collect(Collectors.toSet());
+				collect(Collectors.toList());
 	}
 
 	public double getUserDebt(int userId) throws NoSuchUserException {
