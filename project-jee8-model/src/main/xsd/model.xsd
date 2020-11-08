@@ -2,12 +2,13 @@
 	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
 
 
-	<xsd:element name="user" type="user"></xsd:element>
-	<xsd:element name="address" type="address"></xsd:element>
-	<xsd:element name="ccinfo" type="ccinfo"></xsd:element>
-	<xsd:element name="invoice" type="invoice"></xsd:element>
-	<xsd:element name="invoiceWrapper" type="invoiceWrapper"></xsd:element>
+	<xsd:element name="user" type="user"/>
+	<xsd:element name="address" type="address"/>
+	<xsd:element name="ccinfo" type="ccinfo"/>
+	<xsd:element name="invoice" type="invoice"/>
+	<xsd:element name="invoiceWrapper" type="invoiceWrapper"/>
 
+	<!-- Useful sh*t -->
 	<xsd:simpleType name="SimpleDate">
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -26,11 +27,22 @@
 
 	<xsd:complexType name="user">
 		<xsd:sequence>
-			<xsd:element name="id" type="xsd:int"></xsd:element>
-			<xsd:element name="fname" type="xsd:string"></xsd:element>
-			<xsd:element name="lname" type="xsd:string"></xsd:element>
+			<xsd:element name="id" type="xsd:int"/>
+			<xsd:element name="fname" type="xsd:string"/>
+			<xsd:element name="lname" type="xsd:string"/>
 			<xsd:element name="membershipId" type="xsd:int"
-				minOccurs="0"></xsd:element>
+						 minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="user2">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:int"/>
+			<xsd:element name="fname" type="xsd:string"/>
+			<xsd:element name="lname" type="xsd:string"/>
+			<xsd:element name="membershipId" type="xsd:int"
+						 minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -41,10 +53,10 @@
 
 	<xsd:complexType name="address">
 		<xsd:sequence>
-			<xsd:element name="streetName" type="xsd:string"></xsd:element>
-			<xsd:element name="streetNumber" type="xsd:int"></xsd:element>
-			<xsd:element name="zipCode" type="xsd:string"></xsd:element>
-			<xsd:element name="Country" type="xsd:string"></xsd:element>
+			<xsd:element name="streetName" type="xsd:string"/>
+			<xsd:element name="streetNumber" type="xsd:int"/>
+			<xsd:element name="zipCode" type="xsd:string"/>
+			<xsd:element name="Country" type="xsd:string"/>
 		</xsd:sequence>
 
 	</xsd:complexType>
@@ -55,8 +67,8 @@
 	<xsd:element name="freeTrialPlan">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element name="user" type="user"></xsd:element>
-				<xsd:element name="address" type="address"></xsd:element>
+				<xsd:element name="user" type="user"/>
+				<xsd:element name="address" type="address"/>
 			</xsd:sequence>
 
 		</xsd:complexType>
@@ -76,7 +88,7 @@
 	<xsd:complexType name="invoiceWrapper">
 		<xsd:sequence>
 			<xsd:element name="invoices" type="invoice"
-				maxOccurs="unbounded"></xsd:element>
+						 maxOccurs="unbounded"/>
 		</xsd:sequence>
 
 	</xsd:complexType>
@@ -85,14 +97,44 @@
 
 			<xsd:element name="date" type="SimpleDate">
 			</xsd:element>
-			<xsd:element name="contractId" type="xsd:int"></xsd:element>
-			<xsd:element name="paid" type="xsd:boolean"></xsd:element>
+			<xsd:element name="contractId" type="xsd:int"/>
+			<xsd:element name="paid" type="xsd:boolean"/>
 		</xsd:sequence>
 
 	</xsd:complexType>
+	
+	
+	<!-- Our XSD starts here -->
+	<xsd:element name="train" type="train"/>
+	<xsd:element name="gare" type="gare"/>
+	<xsd:element name="infoRetard" type="infoRetard"/>
 
 
+	<xsd:complexType name="train">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string"/>
+			<xsd:element name="gareDepart" type="gare"/>
+			<xsd:element name="gareArrivee" type="gare"/>
+			<xsd:element name="garesIntermediaires" type="gare" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="heureDepart" type="SimpleDate"/>
+			<xsd:element name="heureArrivee" type="SimpleDate"/>
+		</xsd:sequence>
+	</xsd:complexType>
 
+	<xsd:complexType name="gare">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string"/>
+			<xsd:element name="nom" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="infoRetard">
+		<xsd:sequence>
+			<xsd:element name="idTrain" type="xsd:string"/>
+			<xsd:element name="nouvelleHeureArrivee" type="SimpleDate"/>
+			<xsd:element name="message" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
 
 
 </xsd:schema>
