@@ -2,6 +2,7 @@
 
 Nelly Ung
 William Dai
+Nicolas Lewin
 
 ## What's here
 
