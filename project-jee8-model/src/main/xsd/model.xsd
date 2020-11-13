@@ -103,7 +103,7 @@
 
 	</xsd:complexType>
 	
-	
+	    
 	<!-- Our XSD starts here -->
 	<xsd:element name="train" type="train"/>
 	<xsd:element name="gare" type="gare"/>

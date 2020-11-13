@@ -3,6 +3,8 @@
 Nelly Ung
 William Dai
 Nicolas Lewin
+Sarah Meziane
+Massil Taguemout
 
 ## What's here
 
