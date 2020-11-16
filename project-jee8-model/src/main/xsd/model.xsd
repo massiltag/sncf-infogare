@@ -135,4 +135,123 @@
 	</xsd:complexType>
 
 
+
+
+	<xsd:element name="arrivalsWrapper">
+		<xsd:complexType>
+			<xsd:sequence>
+
+				<xsd:element name="arrival" minOccurs="0" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+
+							<xsd:element name="stopPoint">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="commercialMode" type="xsd:string"/>
+										<xsd:element name="name" type="xsd:string"/>
+										<xsd:element name="physicalMode" type="xsd:string"/>
+										<xsd:element name="id" type="xsd:string"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+
+							<xsd:element name="route">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="directionType" type="xsd:string"/>
+										<xsd:element name="name" type="xsd:string"/>
+										<xsd:element name="id" type="xsd:string"/>
+										<xsd:element name="direction" type="xsd:string"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+
+							<xsd:element name="stopDateTime">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="baseDepartureDateTime" type="SimpleDate"/>
+										<xsd:element name="baseArrivalDateTime" type="SimpleDate"/>
+										<xsd:element name="arrivalDateTime" type="SimpleDate"/>
+										<xsd:element name="departureDateTime" type="SimpleDate"/>
+										<xsd:element name="dataFreshness" type="xsd:string"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+
+							<xsd:element name="displayInformations">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="commercialMode" type="xsd:string"/>
+										<xsd:element name="direction" type="xsd:string"/>
+										<xsd:element name="physicalMode" type="xsd:string"/>
+										<xsd:element name="headsign" type="xsd:string"/>
+										<xsd:element name="network" type="xsd:string"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+
+
+
+	<xsd:element name="departuresWrapper">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="departure" minOccurs="0" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="network" type="xsd:string"/>
+							<xsd:element name="name" type="xsd:string"/>
+							<xsd:element name="direction" type="xsd:string"/>
+							<xsd:element name="physicalMode" type="xsd:string"/>
+							<xsd:element name="commercialMode" type="xsd:string"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="disruptionsWrapper">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="disruption" minOccurs="0" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="id" type="xsd:string"/>
+							<xsd:element name="priority" type="xsd:int"/>
+							<xsd:element name="effect" type="xsd:string"/>
+							<xsd:element name="name" type="xsd:string"/>
+							<xsd:element name="impactedTrips" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="id" type="xsd:string"/>
+										<xsd:element name="name" type="xsd:string"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="status" type="xsd:string"/>
+							<xsd:element name="updatedAt" type="xsd:string"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+
+
+
+
+
 </xsd:schema>
