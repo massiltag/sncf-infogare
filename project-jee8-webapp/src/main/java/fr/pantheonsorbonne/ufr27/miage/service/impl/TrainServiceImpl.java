@@ -17,7 +17,7 @@ public class TrainServiceImpl implements TrainService {
     EntityManager em;
 
     @Override
-    public void processArrivalInfo(LiveInfo liveInfo) {
+    public void processLiveInfo(LiveInfo liveInfo) {
         String idTrain = liveInfo.getIdTrain();
         /**
          * ICI : utiliser entityManager pour

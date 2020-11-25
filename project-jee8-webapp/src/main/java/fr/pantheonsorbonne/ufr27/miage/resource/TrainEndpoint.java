@@ -19,8 +19,8 @@ public class TrainEndpoint {
     @POST
     @Consumes(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("arrival")
-    public Response postDelayInfo(LiveInfo liveInfo) {
-        trainService.processArrivalInfo(liveInfo);
+    public Response postLiveInfo(LiveInfo liveInfo) {
+        trainService.processLiveInfo(liveInfo);
         return Response.status(201, "Info received.").build();
     }
 

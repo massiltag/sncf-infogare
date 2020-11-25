@@ -6,7 +6,7 @@ import java.time.Duration;
 
 public interface TrainService {
 
-    public void processArrivalInfo(LiveInfo liveInfo);
+    public void processLiveInfo(LiveInfo liveInfo);
 
     public void triggerDelay(String idTrain, Duration duration);
 }
