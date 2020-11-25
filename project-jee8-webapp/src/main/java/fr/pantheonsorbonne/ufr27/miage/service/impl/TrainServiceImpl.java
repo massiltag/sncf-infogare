@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ArrivalInfo;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo;
 import fr.pantheonsorbonne.ufr27.miage.service.TrainService;
 
 import javax.annotation.ManagedBean;
@@ -17,8 +17,8 @@ public class TrainServiceImpl implements TrainService {
     EntityManager em;
 
     @Override
-    public void processArrivalInfo(ArrivalInfo arrivalInfo) {
-        String idTrain = arrivalInfo.getIdTrain();
+    public void processArrivalInfo(LiveInfo liveInfo) {
+        String idTrain = liveInfo.getIdTrain();
         /**
          * ICI : utiliser entityManager pour
          *      - Récupérer le train dont l'ID est idTrain

@@ -88,9 +88,9 @@
 
 
 	<!-- Our XSD starts here -->
-	<xsd:element name="train" type="train"/>
+	<xsd:element name="trajet" type="trajet"/>
 	<xsd:element name="gare" type="gare"/>
-	<xsd:element name="arrivalInfo" type="arrivalInfo"/>
+	<xsd:element name="liveInfo" type="liveInfo"/>
 
 	<!-- Useful -->
 	<xsd:simpleType name="SimpleDate">
@@ -108,7 +108,7 @@
 	</xsd:simpleType>
 
 
-	<xsd:complexType name="train">
+	<xsd:complexType name="trajet">
 		<xsd:sequence>
 			<xsd:element name="id" type="xsd:string"/>
 			<xsd:element name="desserteReelle"  type="desserte" minOccurs="0" maxOccurs="unbounded"/>
@@ -132,7 +132,7 @@
 		</xsd:sequence>
 	</xsd:complexType>
 
-	<xsd:complexType name="arrivalInfo">
+	<xsd:complexType name="liveInfo">
 		<xsd:sequence>
 			<xsd:element name="idTrain" type="xsd:string"/>
 			<xsd:element name="message" type="xsd:string"/>
