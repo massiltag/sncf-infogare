@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.resource;
 
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.DelayInfo;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ArrivalInfo;
 import fr.pantheonsorbonne.ufr27.miage.service.TrainService;
 
 import javax.inject.Inject;
@@ -18,9 +18,9 @@ public class TrainEndpoint {
 
     @POST
     @Consumes(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    @Path("delay")
-    public Response postDelayInfo(DelayInfo delayInfo) {
-        trainService.processDelay(delayInfo);
+    @Path("arrival")
+    public Response postDelayInfo(ArrivalInfo arrivalInfo) {
+        trainService.processArrivalInfo(arrivalInfo);
         return Response.status(201, "Info received.").build();
     }
 
