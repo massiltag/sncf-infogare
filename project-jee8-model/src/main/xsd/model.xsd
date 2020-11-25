@@ -126,7 +126,7 @@
 	<xsd:complexType name="desserte">
 		<xsd:sequence>
 			<xsd:element name="index" type="xsd:int"/>
-			<xsd:element name="gare" type="gare"/>
+			<xsd:element name="gareId" type="xsd:string"/>
 			<xsd:element name="desservi" type="xsd:boolean"/>
 			<xsd:element name="depart" type="SimpleDate"/>
 			<xsd:element name="arrivee" type="SimpleDate"/>
@@ -136,9 +136,10 @@
 	<xsd:complexType name="liveInfo">
 		<xsd:sequence>
 			<xsd:element name="idTrain" type="xsd:string"/>
-			<xsd:element name="message" type="xsd:string"/>
-			<xsd:element name="gare" type="gare"/>
-			<xsd:element name="arriveeDateTime" type="SimpleDate"/>
+			<xsd:element name="lastGareId" type="xsd:string"/>
+			<xsd:element name="nextGareId" type="xsd:string"/>
+			<xsd:element name="percentage" type="xsd:int"/>
+			<xsd:element name="timestamp" type="SimpleDate"/>
 		</xsd:sequence>
 	</xsd:complexType>
 
