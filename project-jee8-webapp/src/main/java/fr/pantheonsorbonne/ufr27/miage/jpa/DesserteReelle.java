@@ -1,9 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.jpa;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -15,20 +12,22 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
+@Builder
+@AllArgsConstructor
 @Entity
 @Getter
 @Setter
 public class DesserteReelle {
 
+    public DesserteReelle() {}
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
-    boolean desservi;
+    int seq;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    Date depart;
+    boolean desservi;
 
     @Temporal(TemporalType.TIMESTAMP)
     Date arrivee;

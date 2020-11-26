@@ -1,17 +1,25 @@
 package fr.pantheonsorbonne.ufr27.miage.jpa;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+@Builder
 @Entity
+@AllArgsConstructor
 public class Gare {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
 	String nom;
+
+	public Gare() {}
 
 	public int getId() {
 		return id;
