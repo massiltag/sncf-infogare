@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class BillingInfo {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;

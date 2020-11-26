@@ -10,6 +10,8 @@ import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Desserte;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare;
 import fr.pantheonsorbonne.ufr27.miage.service.*;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.*;
 import org.glassfish.grizzly.http.server.HttpServer;
