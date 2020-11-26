@@ -135,9 +135,9 @@
 
 	<xsd:complexType name="liveInfo">
 		<xsd:sequence>
-			<xsd:element name="idTrain" type="xsd:string"/>
-			<xsd:element name="lastGareId" type="xsd:int"/>
-			<xsd:element name="nextGareId" type="xsd:int"/>
+			<xsd:element name="idTrajet" type="xsd:int"/>
+			<xsd:element name="lastGareIndex" type="xsd:int"/>
+			<xsd:element name="nextGareIndex" type="xsd:int"/>
 			<xsd:element name="percentage" type="xsd:int"/>
 			<xsd:element name="timestamp" type="SimpleDate"/>
 		</xsd:sequence>

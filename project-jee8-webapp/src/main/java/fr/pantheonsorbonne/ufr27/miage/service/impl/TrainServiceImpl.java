@@ -1,25 +1,32 @@
 package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
+import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo;
 import fr.pantheonsorbonne.ufr27.miage.service.TrainService;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Date;
+
+import static fr.pantheonsorbonne.ufr27.miage.util.Utils.*;
 
 @ApplicationScoped
 @ManagedBean
+@Slf4j
 public class TrainServiceImpl implements TrainService {
-
     @Inject
     EntityManager em;
 
     @Override
     public void processLiveInfo(LiveInfo liveInfo) {
-        String idTrain = liveInfo.getIdTrain();
         /**
          * ICI : utiliser entityManager pour
          *      - Récupérer le train dont l'ID est idTrain
@@ -29,6 +36,22 @@ public class TrainServiceImpl implements TrainService {
          *          => Déterminer si retard (fixer une marge)
          *          => Déclencher triggerDelay éventuellement
          */
+        log.info("Received LiveInfo of train " + liveInfo.getIdTrajet());
+        int idTrajet = liveInfo.getIdTrajet();
+        Trajet trajet = em.find(Trajet.class, idTrajet);
+        log.info("Got train : " + trajet.toString());
+
+        em.getTransaction().begin();
+
+        int normalPercentage = shouldBeAtPercent(
+                dateToLocalDateTime(trajet.getDesserteReelles().get(liveInfo.getLastGareIndex() - 1).getArrivee()),
+                dateToLocalDateTime(trajet.getDesserteReelles().get(liveInfo.getNextGareIndex() - 1).getArrivee()),
+                liveInfo.getTimestamp()
+        );
+
+        calculateIfDelay(liveInfo, normalPercentage);
+
+        em.getTransaction().commit();
     }
 
     @Override
@@ -38,7 +61,7 @@ public class TrainServiceImpl implements TrainService {
          */
     }
 
-    public void calculateDelay(LiveInfo liveInfo) {
+    public void calculateIfDelay(LiveInfo liveInfo, int normalPercentage) {
         /**
          * ICI : Récupérer les informations théoriques du train depuis la base de données,
          *  Comparer avec les informations reçues :
@@ -47,11 +70,7 @@ public class TrainServiceImpl implements TrainService {
          *      - planifiedDeparture = dessertes.get(lastGareId)...
          *      - planifiedArrival = dessertes.get(nextGareId)...
          */
-        LocalDateTime planifiedDeparture = null;
-        LocalDateTime planifiedArrival = null;
-        LocalDateTime now = liveInfo.getTimestamp();
-
-        int diff = liveInfo.getPercentage() - shouldBeAtPercent(planifiedDeparture, planifiedArrival, now);
+        int diff = liveInfo.getPercentage() - normalPercentage;
         if (Math.abs(diff) > 10) {
             if (diff < 0) {
                 // retard() de diff% = pourcentage de la duration entre planifiedDep et planifiedArr
