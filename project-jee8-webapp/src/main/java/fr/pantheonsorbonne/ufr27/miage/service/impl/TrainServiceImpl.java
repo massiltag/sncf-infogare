@@ -15,6 +15,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 import static fr.pantheonsorbonne.ufr27.miage.util.Utils.*;
 
@@ -87,4 +88,34 @@ public class TrainServiceImpl implements TrainService {
 
         return (int)((double)betweenDuration.toSeconds()*100/(double)totalDuration.toSeconds());
     }
+
+	@Override
+	public void processCancel(int id, String conditions) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Trajet processGetTrain(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Trajet> processGetTrainList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Trajet> processGetTrainArriveeGareList(Gare gare) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Trajet> processGetTrainDepartGareList(Gare gare) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
