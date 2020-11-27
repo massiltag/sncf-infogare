@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
-import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo;
 
 import java.time.Duration;

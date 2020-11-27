@@ -1,22 +1,15 @@
 package fr.pantheonsorbonne.ufr27.miage.resource;
 
-import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
-import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteTheorique;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo;
 import fr.pantheonsorbonne.ufr27.miage.service.TrainService;
 
-import java.util.List;
-
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 
 @Path("train")

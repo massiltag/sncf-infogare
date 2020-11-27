@@ -1,8 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
-import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo;
 import fr.pantheonsorbonne.ufr27.miage.service.TrainService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +11,10 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
-import static fr.pantheonsorbonne.ufr27.miage.util.Utils.*;
+import static fr.pantheonsorbonne.ufr27.miage.util.Utils.dateToLocalDateTime;
 
 @ApplicationScoped
 @ManagedBean
