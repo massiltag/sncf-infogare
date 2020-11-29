@@ -147,6 +147,7 @@
 						<arguments>
 							<argument>-Xlombok</argument>
 							<argument>-Xlombok:Builder</argument>
+							<argument>-Xlombok:ToString</argument>
 						</arguments>
 					</configuration>
 

@@ -1,17 +1,15 @@
 package fr.pantheonsorbonne.ufr27.miage.jpa;
 
-import lombok.*;
+import fr.pantheonsorbonne.ufr27.miage.util.DateUtil;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 @Builder
 @AllArgsConstructor
 @Entity
@@ -38,4 +36,8 @@ public class DesserteReelle {
     @ManyToOne
     Trajet trajet;
 
+    public void addDuration(Duration duration) {
+        LocalDateTime ldt = DateUtil.dateToLocalDateTime(this.arrivee);
+        this.setArrivee(DateUtil.localDateTimeToDate(ldt.plus(duration)));
+    }
 }

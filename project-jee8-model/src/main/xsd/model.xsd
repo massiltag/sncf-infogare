@@ -139,7 +139,7 @@
 			<xsd:element name="lastGareIndex" type="xsd:int"/>
 			<xsd:element name="nextGareIndex" type="xsd:int"/>
 			<xsd:element name="percentage" type="xsd:int"/>
-			<xsd:element name="timestamp" type="SimpleDate"/>
+			<xsd:element name="timestamp" type="xsd:string"/>
 		</xsd:sequence>
 	</xsd:complexType>
 

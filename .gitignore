@@ -21,7 +21,6 @@ dist/
 
 # Maven
 target/
-dist/
 
 # JetBrains IDE
 .idea/
@@ -50,3 +49,5 @@ Thumbs.db
 
 # Artemis
 data/
+data/*
+*/data

@@ -2,15 +2,8 @@ package fr.pantheonsorbonne.ufr27.miage.jpa;
 
 import lombok.*;
 
-import java.util.Date;
+import javax.persistence.*;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Builder
 @Entity
@@ -57,5 +50,18 @@ public class Trajet {
 		desserteTheorique.setTrajet(this);
 	}
 
+	public DesserteReelle getDesserteReelleNo(int seq) {
+		return this.getDesserteReelles().stream()
+				.filter(gare -> gare.getSeq() == seq)
+				.findFirst()
+				.orElse(null);
+	}
+
+	public DesserteTheorique getDesserteTheoriqueNo(int seq) {
+		return this.getDesserteTheoriques().stream()
+				.filter(gare -> gare.getSeq() == seq)
+				.findFirst()
+				.orElse(null);
+	}
 
 }

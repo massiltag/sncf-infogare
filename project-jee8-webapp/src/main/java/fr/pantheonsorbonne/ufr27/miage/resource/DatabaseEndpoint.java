@@ -12,12 +12,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
-import static fr.pantheonsorbonne.ufr27.miage.util.Utils.*;
+import static fr.pantheonsorbonne.ufr27.miage.util.DateUtil.localDateTimeToDate;
 
 /**
  * Test Endpoint used to populate DB.
