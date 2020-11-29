@@ -25,8 +25,10 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
+import fr.pantheonsorbonne.ufr27.miage.dao.DesserteReelleDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
 import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
 import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
@@ -75,6 +77,8 @@ public class Main {
 
 						// SNCF
 						bind(TrainServiceImpl.class).to(TrainService.class);
+						bind(DesserteReelleDAO.class).to(DesserteReelleDAO.class);
+						bind(TrajetDAO.class).to(TrajetDAO.class);
 
 					}
 
