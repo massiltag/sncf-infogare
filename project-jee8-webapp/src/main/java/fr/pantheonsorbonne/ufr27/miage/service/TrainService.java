@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TrainService {
 
-    public void processLiveInfo(LiveInfo liveInfo);
+    public void processLiveInfo(LiveInfo liveInfo, int trajetId);
 
     public void triggerDelay(String idTrain, Duration duration);
 

@@ -20,9 +20,9 @@ public class TrainEndpoint {
 
     @POST
     @Consumes(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    @Path("live")
-    public Response postLiveInfo(LiveInfo liveInfo) {
-        trainService.processLiveInfo(liveInfo);
+    @Path("{id}/live")
+    public Response postLiveInfo(LiveInfo liveInfo, @PathParam("id") int id) {
+        trainService.processLiveInfo(liveInfo, id);
         return Response.status(201, "Info received.").build();
     }
 

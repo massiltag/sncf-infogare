@@ -35,11 +35,10 @@ public class TrainServiceImpl implements TrainService {
      * - Modifie les temps d'arrivée réels en fonction du retard (éventuellement)
      */
     @Override
-    public void processLiveInfo(LiveInfo liveInfo) {
-        log.info("Received LiveInfo of train " + liveInfo.getIdTrajet());
+    public void processLiveInfo(LiveInfo liveInfo, int trajetId) {
+        log.info("Received LiveInfo of train " + trajetId);
         log.info(printColor("Received " + liveInfo.toString(), ANSI_BLUE));
-        int idTrajet = liveInfo.getIdTrajet();
-        Trajet trajet = em.find(Trajet.class, idTrajet);
+        Trajet trajet = em.find(Trajet.class, trajetId);
         log.info("Got train : " + trajet.toString());
 
         em.getTransaction().begin();
