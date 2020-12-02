@@ -31,7 +31,9 @@ public class TrajetDAO implements Dao<Trajet> {
 
 	public boolean delete(Trajet trajet) {
 		try {
+			manager.getTransaction().begin();
 			manager.remove(trajet);
+			manager.getTransaction().commit();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -42,7 +44,9 @@ public class TrajetDAO implements Dao<Trajet> {
 
 	public boolean save(Trajet trajet) {
 		try {
+			manager.getTransaction().begin();
 			manager.persist(trajet);
+			manager.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -51,9 +55,11 @@ public class TrajetDAO implements Dao<Trajet> {
 	}
 
 	public void update(Trajet trajet, Object[] params) {
+		manager.getTransaction().begin();
 		trajet.setDesserteReelles(Objects.requireNonNull((List)params[0], "DesserteReelle ne peut pas etre nulle"));
 		trajet.setDesserteTheoriques(Objects.requireNonNull((List)params[1], "DesserteTheorique ne peut pas etre nulle"));
-		manager.merge(trajet);
+		//manager.merge(trajet);
+		manager.getTransaction().commit();
 	}
 
 }
