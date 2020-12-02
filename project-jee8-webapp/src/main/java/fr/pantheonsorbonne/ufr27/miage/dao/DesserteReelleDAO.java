@@ -35,7 +35,9 @@ public class DesserteReelleDAO implements Dao<DesserteReelle> {
 
 	public boolean delete(DesserteReelle desserte) {
 		try {
+			manager.getTransaction().begin();
 			manager.remove(desserte);
+			manager.getTransaction().commit();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -46,7 +48,9 @@ public class DesserteReelleDAO implements Dao<DesserteReelle> {
 
 	public boolean save(DesserteReelle desserte) {
 		try {
+			manager.getTransaction().begin();
 			manager.persist(desserte);
+			manager.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -55,12 +59,14 @@ public class DesserteReelleDAO implements Dao<DesserteReelle> {
 	}
 
 	public void update(DesserteReelle desserte, Object[] params) {
+		manager.getTransaction().begin();
 		desserte.setSeq(Objects.requireNonNull((int) params[0], "sequence ne peut pas etre nulle"));
 		desserte.setDesservi(Objects.requireNonNull((boolean) params[1], "desservi ne peut pas etre nulle"));
 		desserte.setArrivee(Objects.requireNonNull((Date) params[2], "Heure arrivee ne peut pas etre nulle"));
 		desserte.setGare(Objects.requireNonNull((Gare) params[3], "Gare ne peut pas etre nulle"));
 		desserte.setTrajet(Objects.requireNonNull((Trajet) params[4], "trajet ne peut pas etre nulle"));
-		manager.merge(desserte);
+		//manager.merge(desserte);
+		manager.getTransaction().commit();
 	}
 
 }
