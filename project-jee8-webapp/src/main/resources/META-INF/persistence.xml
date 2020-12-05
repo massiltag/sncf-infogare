@@ -9,14 +9,14 @@
 		<properties>
 		
 
-			<property name="javax.persistence.jdbc.url" value="jdbc:h2:~/test" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:h2:~/test;FILE_LOCK=NO" />
 			<property name="javax.persistence.jdbc.user" value="SA" />
 			<property name="javax.persistence.jdbc.password" value="" />
 
 
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 			<property name="eclipselink.ddl-generation.output-mode" value="database" />
-			<property name="eclipselink.logging.level" value="FINE"/>				
+			<property name="eclipselink.logging.level" value="FINE"/>
 		</properties>
 
 	</persistence-unit>

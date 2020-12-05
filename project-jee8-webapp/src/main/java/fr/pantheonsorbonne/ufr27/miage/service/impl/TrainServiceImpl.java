@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
+import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,9 +25,9 @@ import static fr.pantheonsorbonne.ufr27.miage.util.StringUtil.*;
 @Slf4j
 public class TrainServiceImpl implements TrainService {
     @Inject
-    EntityManager em;
+    TrajetDAO trajetDAO;
 
-    private static int TOLERATED_PERCENTAGE = 10;
+    private final static int TOLERATED_PERCENTAGE = 10;
 
     /**
      * - Récupère le trajet concerné depuis la base de données
@@ -38,45 +38,33 @@ public class TrainServiceImpl implements TrainService {
     public void processLiveInfo(LiveInfo liveInfo, int trajetId) {
         log.info("Received LiveInfo of train " + trajetId);
         log.info(printColor("Received " + liveInfo.toString(), ANSI_BLUE));
-        Trajet trajet = em.find(Trajet.class, trajetId);
-        log.info("Got train : " + trajet.toString());
 
-        em.getTransaction().begin();
+        Trajet trajet = trajetDAO.find(trajetId);
+
+        log.info("Got train : " + trajet.toString());
 
         Duration delay = calculateIfDelay(trajet, liveInfo);
         log.info(printColor("Delay is " + delay.toMinutes() + " min", ANSI_BLUE));
 
         List<DesserteReelle> newDesserteInfo;
-        if (delay.toSeconds() > 0) {
+        if (Math.abs(delay.toSeconds()) > 0) {
             newDesserteInfo = trajet.getDesserteReelles().stream()
                     .map(dr -> {
                         if (dr.getSeq() >= liveInfo.getNextGareIndex() && dr.isDesservi())
                             dr.addDuration(delay);
                         return dr;
                     }).collect(Collectors.toList());
-            trajet.setDesserteReelles(newDesserteInfo);
+            trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
         }
 
-        em.getTransaction().commit();
-    }
-
-    @Override
-    public void triggerDelay(String idTrain, Duration duration) {
-        /**
-         * Autres règles
-         */
     }
 
     public Duration calculateIfDelay(Trajet trajet, LiveInfo liveInfo) {
         /**
          * ICI : Récupérer les informations théoriques du train depuis la base de données,
-         *  Comparer avec les informations reçues :
-         *      - train = jpa.find(trainId)
-         *      - List<Desserte> dessertes = train.getDesserte()
-         *      - planifiedDeparture = dessertes.get(lastGareId)...
-         *      - planifiedArrival = dessertes.get(nextGareId)...
+         *  Comparer avec les informations reçues
          */
-        int normalPercentage = shouldBeAtPercent(
+        double normalPercentage = shouldBeAtPercent(
                 dateToLocalDateTime(trajet.getDesserteReelles().get(liveInfo.getLastGareIndex() - 1).getArrivee()),
                 dateToLocalDateTime(trajet.getDesserteReelles().get(liveInfo.getNextGareIndex() - 1).getArrivee()),
                 stringToLocalDateTime(liveInfo.getTimestamp())
@@ -84,30 +72,29 @@ public class TrainServiceImpl implements TrainService {
 
         log.info(printColor("Normal percentage is " + normalPercentage + "%", ANSI_RED));
 
-        int diff = liveInfo.getPercentage() - normalPercentage;
+        double diff = liveInfo.getPercentage() - normalPercentage;
         log.info(printColor("Diff is " + diff + "%", ANSI_RED));
         if (Math.abs(diff) >= TOLERATED_PERCENTAGE) {
+            Duration duration = Duration.between(
+                    dateToLocalDateTime(trajet.getDesserteTheoriqueNo(liveInfo.getLastGareIndex()).getArrivee()),
+                    dateToLocalDateTime(trajet.getDesserteTheoriqueNo(liveInfo.getNextGareIndex()).getArrivee())
+            );
+            // diff% = pourcentage de la Duration entre le dep. et l'arr. théorique
+            long secondsLong = (long) (duration.toSeconds()*Math.abs(diff)/100);
             if (diff < 0) {
-                Duration duration = Duration.between(
-                        dateToLocalDateTime(trajet.getDesserteTheoriqueNo(liveInfo.getLastGareIndex()).getArrivee()),
-                        dateToLocalDateTime(trajet.getDesserteTheoriqueNo(liveInfo.getNextGareIndex()).getArrivee())
-                );
-                // Retard de diff% = pourcentage de la Duration entre le dep. et l'arr. théorique
-                long secondsLong = duration.toSeconds()*Math.abs(diff)/100;
-                Duration delay = Duration.ofSeconds(secondsLong);
-                return delay;
+                return Duration.ofSeconds(secondsLong);
             } else {
-                // TODO avance()
+                return Duration.ofSeconds(0).minus(Duration.ofSeconds(secondsLong));
             }
         }
         return Duration.ofMillis(0);
     }
 
-    public int shouldBeAtPercent(LocalDateTime departure, LocalDateTime arrival, LocalDateTime live) {
+    public double shouldBeAtPercent(LocalDateTime departure, LocalDateTime arrival, LocalDateTime live) {
         Duration totalDuration = Duration.between(departure, arrival);
         Duration betweenDuration = Duration.between(departure, live);
 
-        return (int)((double)betweenDuration.toSeconds()*100/(double)totalDuration.toSeconds());
+        return ((double)betweenDuration.toSeconds()*100/(double)totalDuration.toSeconds());
     }
 
 	@Override

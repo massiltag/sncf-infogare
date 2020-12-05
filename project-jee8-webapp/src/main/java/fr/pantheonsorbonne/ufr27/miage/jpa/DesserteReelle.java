@@ -37,7 +37,12 @@ public class DesserteReelle {
     Trajet trajet;
 
     public void addDuration(Duration duration) {
-        LocalDateTime ldt = DateUtil.dateToLocalDateTime(this.arrivee);
-        this.setArrivee(DateUtil.localDateTimeToDate(ldt.plus(duration)));
+        LocalDateTime ldt = DateUtil.dateToLocalDateTime(this.arrivee).plus(duration);
+        this.setArrivee(DateUtil.localDateTimeToDate(ldt));
+    }
+
+    public void substractDuration(Duration duration) {
+        LocalDateTime ldt = DateUtil.dateToLocalDateTime(this.arrivee).minus(duration);
+        this.setArrivee(DateUtil.localDateTimeToDate(ldt));
     }
 }

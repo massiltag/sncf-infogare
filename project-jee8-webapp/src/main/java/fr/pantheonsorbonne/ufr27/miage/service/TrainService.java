@@ -4,14 +4,11 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo;
 
-import java.time.Duration;
 import java.util.List;
 
 public interface TrainService {
 
     public void processLiveInfo(LiveInfo liveInfo, int trajetId);
-
-    public void triggerDelay(String idTrain, Duration duration);
 
 	public void processCancel(int id, String conditions);
 

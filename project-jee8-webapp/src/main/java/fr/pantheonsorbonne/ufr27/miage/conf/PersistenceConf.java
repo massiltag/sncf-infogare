@@ -1,17 +1,16 @@
 package fr.pantheonsorbonne.ufr27.miage.conf;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.SQLException;
+import org.h2.tools.Server;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-
-import org.h2.tools.Server;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.SQLException;
 
 
 public class PersistenceConf {
@@ -20,9 +19,10 @@ public class PersistenceConf {
 	public void launchH2WS() {
 
 		try {
+			//Server server = Server.createTcpServer("-tcpAllowOthers", "-tcpPort", "8082");
 			Server server = Server.createWebServer("-webAllowOthers");
 
-			server = server.start();
+			server.start();
 
 			if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 				Desktop.getDesktop().browse(new URI("http://localhost:8082"));

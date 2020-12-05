@@ -35,9 +35,10 @@ public class DatabaseEndpoint {
             System.out.println("TEST PERSISTENCE");
             em.getTransaction().begin();
 
-            Gare gare = Gare.builder().nom("Paris Montparnasse").build();
-            Gare gare2 = Gare.builder().nom("Bordeaux Saint-Jean").build();
-            Gare gare3 = Gare.builder().nom("Lille Flandres").build();
+            Gare gare = Gare.builder().nom("Bordeaux Saint-Jean").build();
+            Gare gare2 = Gare.builder().nom("Paris Montparnasse").build();
+            Gare gare3 = Gare.builder().nom("Gare d'Amiens").build();
+            Gare gare4 = Gare.builder().nom("Lille Flandres").build();
 
             Trajet trajet = Trajet.builder()
                     .desserteReelles(new ArrayList<>())
@@ -62,7 +63,7 @@ public class DatabaseEndpoint {
                     .desservi(true)
                     .build());
             trajet.addDesserteTheorique(DesserteTheorique.builder()
-                    .gare(gare3)
+                    .gare(gare4)
                     .arrivee(localDateTimeToDate(baseDate.plusHours(2)))
                     .desservi(true)
                     .build());
@@ -78,7 +79,7 @@ public class DatabaseEndpoint {
                     .desservi(true)
                     .build());
             trajet.addDesserteReelle(DesserteReelle.builder()
-                    .gare(gare3)
+                    .gare(gare4)
                     .arrivee(localDateTimeToDate(baseDate.plusHours(2)))
                     .desservi(true)
                     .build());
