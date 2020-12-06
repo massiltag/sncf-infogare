@@ -19,4 +19,6 @@ public interface TrainService {
 	public List<Trajet> processGetTrainArriveeGareList(Gare gare);
 
 	public List<Trajet> processGetTrainDepartGareList(Gare gare);
+
+	public void processDelayWithCondition(LiveInfo liveInfo, int id, String condition);
 }

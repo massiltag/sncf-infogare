@@ -41,6 +41,19 @@ public class TrainEndpoint {
     }
     
     /**
+     * Envoi d'un retard par le train en signalant la cause 
+     * @param condition : La cause du retard 
+     * @return
+     */
+    @POST
+    @Consumes(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Path("delay/live/{id}/{condition}")
+    public Response postDelayWithCondition(LiveInfo liveInfo, @PathParam("id") int id, @PathParam("condition") String conditions) {
+        trainService.processDelayWithCondition(liveInfo, id, conditions);
+        return Response.status(200, "Train delayed.").build();
+    }
+    
+    /**
      * Get les infos d'un train
      * @return
      */
