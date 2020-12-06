@@ -97,6 +97,9 @@ public class TrainServiceImpl implements TrainService {
         return ((double)betweenDuration.toSeconds()*100/(double)totalDuration.toSeconds());
     }
     
+    /*
+     * TODO : Inclure JMS pour transmettre le retard aux InfoGares 
+     */
 	@Override
 		public void processDelayWithCondition(LiveInfo liveInfo, int id, String condition) {
 			log.info("Received Delay condition of train " + id);
@@ -105,27 +108,37 @@ public class TrainServiceImpl implements TrainService {
 	        Trajet trajet = trajetDAO.find(id);
 	
 	        log.info("Got train : " + trajet.toString());
-			Duration delay; 
 			
+			Duration delay = calculateIfDelay(trajet, liveInfo);
+	        log.info(printColor("Delay is " + delay.toMinutes() + " min", ANSI_BLUE));
+	        
+	        Duration finalDelay; 
+	        
 			switch (condition) {
 				case "Pluie" : 
-					delay = Duration.ofMinutes(10); break; 
+					finalDelay = delay.plusMinutes(10); 
+					log.info("Delay with Condition is " + finalDelay.toMinutes() + " min");
+					break;
 				case "AccidentHumain" : 
-					delay = Duration.ofMinutes(20); break; 
+					finalDelay = delay.plus(Duration.ofMinutes(20)); 
+					log.info("Delay with Condition is " + finalDelay.toMinutes() + " min");
+					break; 
 				case "PanneElec" : 
-					delay = Duration.ofMinutes(30); break; 
+					finalDelay = delay.plus(Duration.ofMinutes(30)); 
+					log.info("Delay with Condition is " + finalDelay.toMinutes() + " min");
+					break; 
 				default : 
-					delay = Duration.ofMinutes(5); break;
+					finalDelay = delay.plus(Duration.ofMinutes(5)); 
+					log.info("Delay with Condition is " + finalDelay.toMinutes() + " min");
+					break;
 			}
-			
-	        log.info("Delay is " + delay.toMinutes() + " min");
 
 	        List<DesserteReelle> newDesserteInfo;
 	        if (Math.abs(delay.toSeconds()) > 0) {
 	            newDesserteInfo = trajet.getDesserteReelles().stream()
 	                    .map(dr -> {
 	                        if (dr.getSeq() >= liveInfo.getNextGareIndex() && dr.isDesservi())
-	                            dr.addDuration(delay);
+	                            dr.addDuration(finalDelay);
 	                        return dr;
 	                    }).collect(Collectors.toList());
 	            trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
