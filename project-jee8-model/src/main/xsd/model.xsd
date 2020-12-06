@@ -256,10 +256,20 @@
 		</xsd:complexType>
 	</xsd:element>
 
-
-
-
-
-
+	<xsd:simpleType name="EnumConditions">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Pluie"/>
+            <xsd:enumeration value="AccidentHumain"/>
+            <xsd:enumeration value="PanneElec"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="local" type="EnumConditions"/>
+                <xsd:element name="ref" type="EnumConditions"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
 
 </xsd:schema>

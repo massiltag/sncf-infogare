@@ -96,7 +96,42 @@ public class TrainServiceImpl implements TrainService {
 
         return ((double)betweenDuration.toSeconds()*100/(double)totalDuration.toSeconds());
     }
+    
+	@Override
+		public void processDelayWithCondition(LiveInfo liveInfo, int id, String condition) {
+			log.info("Received Delay condition of train " + id);
+	        log.info("Delay condition " + condition);
+	
+	        Trajet trajet = trajetDAO.find(id);
+	
+	        log.info("Got train : " + trajet.toString());
+			Duration delay; 
+			
+			switch (condition) {
+				case "Pluie" : 
+					delay = Duration.ofMinutes(10); break; 
+				case "AccidentHumain" : 
+					delay = Duration.ofMinutes(20); break; 
+				case "PanneElec" : 
+					delay = Duration.ofMinutes(30); break; 
+				default : 
+					delay = Duration.ofMinutes(5); break;
+			}
+			
+	        log.info("Delay is " + delay.toMinutes() + " min");
 
+	        List<DesserteReelle> newDesserteInfo;
+	        if (Math.abs(delay.toSeconds()) > 0) {
+	            newDesserteInfo = trajet.getDesserteReelles().stream()
+	                    .map(dr -> {
+	                        if (dr.getSeq() >= liveInfo.getNextGareIndex() && dr.isDesservi())
+	                            dr.addDuration(delay);
+	                        return dr;
+	                    }).collect(Collectors.toList());
+	            trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
+	        }
+		}
+	
 	@Override
 	public void processCancel(int id, String conditions) {
 		// TODO Auto-generated method stub
@@ -126,4 +161,6 @@ public class TrainServiceImpl implements TrainService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 }
