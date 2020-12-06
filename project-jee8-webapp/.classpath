@@ -40,6 +40,6 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/sarahmeziane/Downloads/lombok.jar"/>
+	<!--classpathentry kind="lib" path="/Users/sarahmeziane/Downloads/lombok.jar"/-->
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
