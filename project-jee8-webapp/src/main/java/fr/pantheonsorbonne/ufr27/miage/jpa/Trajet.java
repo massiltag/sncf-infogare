@@ -17,6 +17,8 @@ public class Trajet {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
 
+	String type;
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trajet")
 	List<DesserteReelle> desserteReelles;
 
