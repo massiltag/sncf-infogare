@@ -14,7 +14,7 @@ import java.util.List;
 public class Trajet {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 
 	String type;
@@ -64,6 +64,16 @@ public class Trajet {
 				.filter(gare -> gare.getSeq() == seq)
 				.findFirst()
 				.orElse(null);
+	}
+
+	public void addDesserteReelles(List<DesserteReelle> desserteReelles) {
+		for (DesserteReelle desserteReelle : desserteReelles)
+			addDesserteReelle(desserteReelle);
+	}
+
+	public void addDesserteTheoriques(List<DesserteTheorique> desserteTheoriques) {
+		for (DesserteTheorique desserteTheorique : desserteTheoriques)
+			addDesserteTheorique(desserteTheorique);
 	}
 
 }

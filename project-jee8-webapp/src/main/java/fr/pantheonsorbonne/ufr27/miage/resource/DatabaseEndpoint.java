@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static fr.pantheonsorbonne.ufr27.miage.util.DateUtil.localDateTimeToDate;
@@ -49,41 +50,44 @@ public class DatabaseEndpoint {
                 Lille 14h
              */
             Trajet trajet = Trajet.builder()
-                    .desserteTheoriques(List.of(
-                                    DesserteTheorique.builder()
-                                            .gare(gare)
-                                            .arrivee(localDateTimeToDate(baseDate))
-                                            .desservi(true)
-                                            .build(),
-                                    DesserteTheorique.builder()
-                                            .gare(gare2)
-                                            .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
-                                            .desservi(true)
-                                            .build(),
-                                    DesserteTheorique.builder()
-                                            .gare(gare4)
-                                            .arrivee(localDateTimeToDate(baseDate.plusHours(2)))
-                                            .desservi(true)
-                                            .build()
-                    ))
-                    .desserteReelles(List.of(
-                            DesserteReelle.builder()
-                                    .gare(gare)
-                                    .arrivee(localDateTimeToDate(baseDate))
-                                    .desservi(true)
-                                    .build(),
-                            DesserteReelle.builder()
-                                    .gare(gare2)
-                                    .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
-                                    .desservi(true)
-                                    .build(),
-                            DesserteReelle.builder()
-                                    .gare(gare4)
-                                    .arrivee(localDateTimeToDate(baseDate.plusHours(2)))
-                                    .desservi(true)
-                                    .build()
-                    ))
+                    .desserteTheoriques(new ArrayList<>())
+                    .desserteReelles(new ArrayList<>())
+                    .type("TGV")
                     .build();
+            trajet.addDesserteTheoriques(List.of(
+                    DesserteTheorique.builder()
+                            .gare(gare)
+                            .arrivee(localDateTimeToDate(baseDate))
+                            .desservi(true)
+                            .build(),
+                    DesserteTheorique.builder()
+                            .gare(gare2)
+                            .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
+                            .desservi(true)
+                            .build(),
+                    DesserteTheorique.builder()
+                            .gare(gare4)
+                            .arrivee(localDateTimeToDate(baseDate.plusHours(2)))
+                            .desservi(true)
+                            .build()
+            ));
+            trajet.addDesserteReelles(List.of(
+                    DesserteReelle.builder()
+                            .gare(gare)
+                            .arrivee(localDateTimeToDate(baseDate))
+                            .desservi(true)
+                            .build(),
+                    DesserteReelle.builder()
+                            .gare(gare2)
+                            .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
+                            .desservi(true)
+                            .build(),
+                    DesserteReelle.builder()
+                            .gare(gare4)
+                            .arrivee(localDateTimeToDate(baseDate.plusHours(2)))
+                            .desservi(true)
+                            .build()
+            ));
 
             /* Populate with data :
                 Bordeaux 11h
@@ -92,54 +96,58 @@ public class DatabaseEndpoint {
                 Lille 13h
              */
             Trajet trajet2 = Trajet.builder()
-                    .desserteTheoriques(List.of(
-                            DesserteTheorique.builder()
-                                    .gare(gare)
-                                    .arrivee(localDateTimeToDate(baseDate.minusHours(1)))
-                                    .desservi(true)
-                                    .build(),
-                            DesserteTheorique.builder()
-                                    .gare(gare2)
-                                    .arrivee(localDateTimeToDate(baseDate.plusHours(0)))
-                                    .desservi(true)
-                                    .build(),
-                            DesserteTheorique.builder()
-                                    .gare(gare3)
-                                    .arrivee(localDateTimeToDate(baseDate.plusMinutes(30)))
-                                    .desservi(true)
-                                    .build(),
-                            DesserteTheorique.builder()
-                                    .gare(gare4)
-                                    .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
-                                    .desservi(true)
-                                    .build()
-                    ))
-                    .desserteReelles(List.of(
-                            DesserteReelle.builder()
-                                    .gare(gare)
-                                    .arrivee(localDateTimeToDate(baseDate.minusHours(1)))
-                                    .desservi(true)
-                                    .build(),
-                            DesserteReelle.builder()
-                                    .gare(gare2)
-                                    .arrivee(localDateTimeToDate(baseDate.plusHours(0)))
-                                    .desservi(true)
-                                    .build(),
-                            DesserteReelle.builder()
-                                    .gare(gare3)
-                                    .arrivee(localDateTimeToDate(baseDate.plusMinutes(30)))
-                                    .desservi(true)
-                                    .build(),
-                            DesserteReelle.builder()
-                                    .gare(gare4)
-                                    .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
-                                    .desservi(true)
-                                    .build()
-                    ))
+                    .desserteTheoriques(new ArrayList<>())
+                    .desserteReelles(new ArrayList<>())
+                    .type("TGV")
                     .build();
+            trajet2.addDesserteTheoriques(List.of(
+                    DesserteTheorique.builder()
+                            .gare(gare)
+                            .arrivee(localDateTimeToDate(baseDate.minusHours(1)))
+                            .desservi(true)
+                            .build(),
+                    DesserteTheorique.builder()
+                            .gare(gare2)
+                            .arrivee(localDateTimeToDate(baseDate.plusHours(0)))
+                            .desservi(true)
+                            .build(),
+                    DesserteTheorique.builder()
+                            .gare(gare3)
+                            .arrivee(localDateTimeToDate(baseDate.plusMinutes(30)))
+                            .desservi(true)
+                            .build(),
+                    DesserteTheorique.builder()
+                            .gare(gare4)
+                            .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
+                            .desservi(true)
+                            .build()
+            ));
+            trajet2.addDesserteReelles(List.of(
+                    DesserteReelle.builder()
+                            .gare(gare)
+                            .arrivee(localDateTimeToDate(baseDate.minusHours(1)))
+                            .desservi(true)
+                            .build(),
+                    DesserteReelle.builder()
+                            .gare(gare2)
+                            .arrivee(localDateTimeToDate(baseDate.plusHours(0)))
+                            .desservi(true)
+                            .build(),
+                    DesserteReelle.builder()
+                            .gare(gare3)
+                            .arrivee(localDateTimeToDate(baseDate.plusMinutes(30)))
+                            .desservi(true)
+                            .build(),
+                    DesserteReelle.builder()
+                            .gare(gare4)
+                            .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
+                            .desservi(true)
+                            .build()
+            ));
 
 
             em.persist(trajet);
+            em.persist(trajet2);
 
             em.getTransaction().commit();
             em.close();

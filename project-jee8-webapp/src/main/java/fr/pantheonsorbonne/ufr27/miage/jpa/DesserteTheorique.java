@@ -18,7 +18,7 @@ public class DesserteTheorique {
 	public DesserteTheorique() {}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 
 	int seq;
