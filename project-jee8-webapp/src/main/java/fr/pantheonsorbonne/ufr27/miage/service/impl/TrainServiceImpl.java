@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
+import fr.pantheonsorbonne.ufr27.miage.dao.DesserteReelleDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 import static fr.pantheonsorbonne.ufr27.miage.util.StringUtil.ANSI_BLUE;
 import static fr.pantheonsorbonne.ufr27.miage.util.StringUtil.printColor;
+import static fr.pantheonsorbonne.ufr27.miage.util.TimeUtil.addDurationToDate;
 import static fr.pantheonsorbonne.ufr27.miage.util.TimeUtil.calculateIfDelay;
 
 @ApplicationScoped
@@ -25,6 +27,9 @@ import static fr.pantheonsorbonne.ufr27.miage.util.TimeUtil.calculateIfDelay;
 public class TrainServiceImpl implements TrainService {
     @Inject
     TrajetDAO trajetDAO;
+
+    @Inject
+	DesserteReelleDAO desserteReelleDAO;
 
 	/**
      * - Récupère le trajet concerné depuis la base de données
@@ -48,9 +53,16 @@ public class TrainServiceImpl implements TrainService {
             newDesserteInfo = trajet.getDesserteReelles().stream()
                     .map(dr -> {
                         if (dr.getSeq() >= liveInfo.getNextGareIndex() && dr.isDesservi())
-                            dr.addDuration(delay);
+                            //dr.addDuration(delay);
+                        	dr.setArrivee(
+                        			addDurationToDate(
+                        					trajet.getDesserteTheoriqueNo(dr.getSeq()).getArrivee(),
+											delay
+									)
+							);
                         return dr;
                     }).collect(Collectors.toList());
+
             trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
         }
 
@@ -60,12 +72,12 @@ public class TrainServiceImpl implements TrainService {
 
     }
 
-	private void processExceptionalStop(Trajet trajet, String timestamp, int atGare) {
+	private void processExceptionalStop(Trajet trajet, String timestamp, int gareId) {
 
 	}
 
 	/*
-     * TODO : Inclure JMS pour transmettre le retard aux InfoGares 
+     * TODO : Inclure JMS pour transmettre le retard aux InfoGares
      */
 	@Override
 		public void processDelayWithCondition(LiveInfo liveInfo, int id, String condition) {
@@ -111,7 +123,7 @@ public class TrainServiceImpl implements TrainService {
 	            trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
 	        }
 		}
-	
+
 	@Override
 	public void processCancel(int id, String conditions) {
 		// TODO Auto-generated method stub

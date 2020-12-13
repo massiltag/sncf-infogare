@@ -6,9 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Date;
 
-import static fr.pantheonsorbonne.ufr27.miage.util.DateUtil.dateToLocalDateTime;
-import static fr.pantheonsorbonne.ufr27.miage.util.DateUtil.stringToLocalDateTime;
+import static fr.pantheonsorbonne.ufr27.miage.util.DateUtil.*;
 import static fr.pantheonsorbonne.ufr27.miage.util.StringUtil.ANSI_RED;
 import static fr.pantheonsorbonne.ufr27.miage.util.StringUtil.printColor;
 
@@ -22,8 +22,8 @@ public class TimeUtil {
          *  Comparer avec les informations reçues
          */
         double normalPercentage = shouldBeAtPercent(
-                dateToLocalDateTime(trajet.getDesserteReelles().get(liveInfo.getLastGareIndex() - 1).getArrivee()),
-                dateToLocalDateTime(trajet.getDesserteReelles().get(liveInfo.getNextGareIndex() - 1).getArrivee()),
+                dateToLocalDateTime(trajet.getDesserteTheoriques().get(liveInfo.getLastGareIndex() - 1).getArrivee()),
+                dateToLocalDateTime(trajet.getDesserteTheoriques().get(liveInfo.getNextGareIndex() - 1).getArrivee()),
                 stringToLocalDateTime(liveInfo.getTimestamp())
         );
 
@@ -52,5 +52,12 @@ public class TimeUtil {
         Duration betweenDuration = Duration.between(departure, live);
 
         return ((double)betweenDuration.toSeconds()*100/(double)totalDuration.toSeconds());
+    }
+
+
+    public static Date addDurationToDate(Date date, Duration duration) {
+        return localDateTimeToDate(
+                dateToLocalDateTime(date).plus(duration)
+        );
     }
 }
