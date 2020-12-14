@@ -44,7 +44,7 @@ public class DatabaseEndpoint {
             LocalDateTime baseDate = LocalDateTime.of(2020, 1, 1, 12, 0);
 
             /* Populate with data :
-                Bordeaux 11h
+                Bordeaux 8h
                 Paris 12h
                 Amiens 12h30
                 Lille 13h
@@ -101,7 +101,7 @@ public class DatabaseEndpoint {
             ));
 
             /* Populate with data :
-                Bordeaux 12h
+                Bordeaux 9h
                 Paris 13h
                 Amiens -
                 Lille 14h
