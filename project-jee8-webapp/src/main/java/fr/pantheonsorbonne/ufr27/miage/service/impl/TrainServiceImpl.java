@@ -13,9 +13,13 @@ import javax.annotation.ManagedBean;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static fr.pantheonsorbonne.ufr27.miage.util.DateUtil.dateToLocalDateTime;
+import static fr.pantheonsorbonne.ufr27.miage.util.DateUtil.localDateTimeToDate;
 import static fr.pantheonsorbonne.ufr27.miage.util.StringUtil.ANSI_BLUE;
 import static fr.pantheonsorbonne.ufr27.miage.util.StringUtil.printColor;
 import static fr.pantheonsorbonne.ufr27.miage.util.TimeUtil.addDurationToDate;
@@ -66,14 +70,62 @@ public class TrainServiceImpl implements TrainService {
             trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
         }
 
-        if (delay.toMinutes() > 120) {
+        if (delay.toMinutes() >= 120) {
 			processExceptionalStop(trajet, liveInfo.getTimestamp(), liveInfo.getNextGareIndex());
 		}
 
     }
 
-	private void processExceptionalStop(Trajet trajet, String timestamp, int gareId) {
+	private void processExceptionalStop(Trajet trajet, String timestamp, int gareIndex) {
+		// Récupérer les trajets ayant le même parcours géographique
+		List<Trajet> sameParcours = trajetDAO.getTrajetByParcoursId(trajet.getParcoursId());
 
+		// Filtrer : Ne garder que les trajets partis après celui en retard
+		sameParcours = sameParcours.stream()
+				.filter(t -> dateToLocalDateTime(t.getDesserteReelleNo(1).getArrivee())
+						.isAfter(dateToLocalDateTime(trajet.getDesserteReelleNo(1).getArrivee()))
+				).collect(Collectors.toList());
+
+		// Ne rien faire si il n'y en a pas
+		if (sameParcours.isEmpty()) return;
+
+		// Trouver le prochain train
+		int nearestTrainId = 0;
+		Duration tempDuration = Duration.of(1, ChronoUnit.DAYS);
+		for (Trajet t : sameParcours) {
+			Duration thisDuration = Duration.between(
+					dateToLocalDateTime(t.getDesserteReelleNo(1).getArrivee()),
+					dateToLocalDateTime(trajet.getDesserteReelleNo(1).getArrivee())
+			);
+			if (thisDuration.toSeconds() < tempDuration.toSeconds()) {
+				tempDuration = thisDuration;
+				nearestTrainId = t.getId();
+			}
+		}
+		if (nearestTrainId == 0) return;
+
+		Trajet nextTrajet = trajetDAO.find(nearestTrainId);
+		List<DesserteReelle> dr_toUpdate = desserteReelleDAO.getAllOfTrajet(nearestTrainId).stream()
+				.filter(d -> d.getSeq() > gareIndex)
+				.filter(d -> !d.isDesservi())
+				.collect(Collectors.toList());
+
+		if (dr_toUpdate.isEmpty()) return;
+
+		for (DesserteReelle dr : dr_toUpdate) {
+			Duration d = Duration.between(
+					dateToLocalDateTime(nextTrajet.getDesserteReelleNo(dr.getSeq() - 1).getArrivee()),
+					dateToLocalDateTime(nextTrajet.getNextDesservieAfter(dr.getSeq()).getArrivee())
+			);
+
+			Date newDesserteDate = localDateTimeToDate(
+					dateToLocalDateTime(
+							nextTrajet.getDesserteReelleNo(dr.getSeq() - 1).getArrivee()
+					).plus(d.toSeconds()/2, ChronoUnit.SECONDS)
+			);
+
+			desserteReelleDAO.setDesservi(dr, new Object[]{true, newDesserteDate});
+		}
 	}
 
 	/*

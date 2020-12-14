@@ -1,15 +1,16 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
+import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
+
+import javax.annotation.ManagedBean;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import javax.annotation.ManagedBean;
-import javax.persistence.EntityManager;
-import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
-import javax.inject.Inject;
 //pas de besoin de transaction.begin ou close ou commit 
 //voir le fichier GymServiceImpl dans package Impl
 
@@ -30,6 +31,12 @@ public class DesserteReelleDAO implements Dao<DesserteReelle> {
 	@Override
 	public List<DesserteReelle> getAll() {
 		List<DesserteReelle> dr = manager.createQuery("SELECT d FROM DesserteReelle d").getResultList();
+		return dr;
+	}
+
+	public List<DesserteReelle> getAllOfTrajet(int trajetId) {
+		List<DesserteReelle> dr = manager.createQuery("SELECT d FROM DesserteReelle d WHERE d.trajet.id = "
+				+ trajetId + " ORDER BY d.seq").getResultList();
 		return dr;
 	}
 
@@ -56,6 +63,13 @@ public class DesserteReelleDAO implements Dao<DesserteReelle> {
 			return false;
 		}
 		return true;
+	}
+
+	public void setDesservi(DesserteReelle desserte, Object[] params) {
+		manager.getTransaction().begin();
+		desserte.setDesservi(Objects.requireNonNull((boolean) params[0], "desservi ne peut pas etre nulle"));
+		desserte.setArrivee(Objects.requireNonNull((Date) params[1], "Heure arrivee ne peut pas etre nulle"));
+		manager.getTransaction().commit();
 	}
 
 	public void update(DesserteReelle desserte, Object[] params) {

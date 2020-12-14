@@ -17,6 +17,11 @@ public class Trajet {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 
+	/**
+	 * idParcours : set à déterminer si deux trains ont le même parcours.
+	 */
+	int parcoursId;
+
 	String type;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trajet")
@@ -52,12 +57,29 @@ public class Trajet {
 		desserteTheorique.setTrajet(this);
 	}
 
+	public DesserteReelle getDesserteReelleOfGare(int gareId) {
+		return this.getDesserteReelles().stream()
+				.filter(d -> d.getGare().getId() == gareId)
+				.findFirst()
+				.orElse(null);
+	}
+
 	public DesserteReelle getDesserteReelleNo(int seq) {
 		return this.getDesserteReelles().stream()
 				.filter(gare -> gare.getSeq() == seq)
 				.findFirst()
 				.orElse(null);
 	}
+
+	public DesserteReelle getNextDesservieAfter(int seq) {
+		return this.getDesserteReelles().stream()
+				.filter(gare -> gare.getSeq() > seq)
+				.filter(gare -> gare.desservi)
+				.findFirst()
+				.orElse(null);
+	}
+
+
 
 	public DesserteTheorique getDesserteTheoriqueNo(int seq) {
 		return this.getDesserteTheoriques().stream()
