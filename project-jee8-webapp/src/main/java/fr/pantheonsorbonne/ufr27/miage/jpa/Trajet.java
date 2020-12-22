@@ -15,7 +15,6 @@ import java.util.List;
 public class Trajet {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 
 	/**

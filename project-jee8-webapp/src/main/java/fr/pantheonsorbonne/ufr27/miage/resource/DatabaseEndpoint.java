@@ -57,43 +57,6 @@ public class DatabaseEndpoint {
 
             LocalDateTime baseDate = LocalDateTime.of(2020, 1, 1, 12, 0);
 
-            /* TER
-                Amiens 12h30
-                Lille 13h
-             */
-            Trajet ter = Trajet.builder()
-                    .desserteTheoriques(new ArrayList<>())
-                    .desserteReelles(new ArrayList<>())
-                    .parcoursId(2)
-                    .type("TER")
-                    .build();
-            ter.addDesserteTheoriques(List.of(
-                    DesserteTheorique.builder()
-                            .gare(gare3)
-                            .arrivee(localDateTimeToDate(baseDate.plusMinutes(30)))
-                            .desservi(true)
-                            .build(),
-                    DesserteTheorique.builder()
-                            .gare(gare4)
-                            .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
-                            .desservi(true)
-                            .build()
-                    )
-            );
-            ter.addDesserteReelles(List.of(
-                    DesserteReelle.builder()
-                            .gare(gare3)
-                            .arrivee(localDateTimeToDate(baseDate.plusMinutes(30)))
-                            .desservi(true)
-                            .build(),
-                    DesserteReelle.builder()
-                            .gare(gare4)
-                            .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
-                            .desservi(true)
-                            .build()
-                    )
-            );
-
 
             /* TGV 1
                 Bordeaux 8h
@@ -102,6 +65,8 @@ public class DatabaseEndpoint {
                 Lille 13h
              */
             Trajet trajet = Trajet.builder()
+                    .id(1)
+                    .idMetier(1)
                     .desserteTheoriques(new ArrayList<>())
                     .desserteReelles(new ArrayList<>())
                     .parcoursId(1)
@@ -159,6 +124,7 @@ public class DatabaseEndpoint {
                 Lille 14h
              */
             Trajet trajet2 = Trajet.builder()
+                    .id(2)
                     .desserteTheoriques(new ArrayList<>())
                     .desserteReelles(new ArrayList<>())
                     .parcoursId(1)
@@ -206,6 +172,44 @@ public class DatabaseEndpoint {
                             .desservi(true)
                             .build()
             ));
+
+            /* TER
+                Amiens 12h30
+                Lille 13h
+             */
+            Trajet ter = Trajet.builder()
+                    .id(3)
+                    .desserteTheoriques(new ArrayList<>())
+                    .desserteReelles(new ArrayList<>())
+                    .parcoursId(2)
+                    .type("TER")
+                    .build();
+            ter.addDesserteTheoriques(List.of(
+                    DesserteTheorique.builder()
+                            .gare(gare3)
+                            .arrivee(localDateTimeToDate(baseDate.plusMinutes(30)))
+                            .desservi(true)
+                            .build(),
+                    DesserteTheorique.builder()
+                            .gare(gare4)
+                            .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
+                            .desservi(true)
+                            .build()
+                    )
+            );
+            ter.addDesserteReelles(List.of(
+                    DesserteReelle.builder()
+                            .gare(gare3)
+                            .arrivee(localDateTimeToDate(baseDate.plusMinutes(30)))
+                            .desservi(true)
+                            .build(),
+                    DesserteReelle.builder()
+                            .gare(gare4)
+                            .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
+                            .desservi(true)
+                            .build()
+                    )
+            );
 
 
             em.persist(trajet);
