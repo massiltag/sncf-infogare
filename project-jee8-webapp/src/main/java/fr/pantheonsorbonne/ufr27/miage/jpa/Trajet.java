@@ -3,6 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.jpa;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Builder
@@ -55,6 +56,21 @@ public class Trajet {
 		desserteTheorique.setSeq(seq);
 		desserteTheoriques.add(desserteTheorique);
 		desserteTheorique.setTrajet(this);
+	}
+
+	public Date getArriveeTheoriqueToGare(int gareId) {
+		return this.getDesserteTheoriqueOfGare(gareId).getArrivee();
+	}
+
+	public Date getArriveeReelleToGare(int gareId) {
+		return this.getDesserteReelleOfGare(gareId).getArrivee();
+	}
+
+	public DesserteTheorique getDesserteTheoriqueOfGare(int gareId) {
+		return this.getDesserteTheoriques().stream()
+				.filter(d -> d.getGare().getId() == gareId)
+				.findFirst()
+				.orElse(null);
 	}
 
 	public DesserteReelle getDesserteReelleOfGare(int gareId) {

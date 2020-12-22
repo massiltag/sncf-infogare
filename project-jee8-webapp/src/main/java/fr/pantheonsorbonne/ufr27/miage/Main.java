@@ -1,17 +1,16 @@
 package fr.pantheonsorbonne.ufr27.miage;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.Locale;
-
-import javax.inject.Singleton;
-import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Desserte;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare;
+import fr.pantheonsorbonne.ufr27.miage.conf.EMFFactory;
+import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
+import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
+import fr.pantheonsorbonne.ufr27.miage.dao.*;
+import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
+import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.JMSProducer;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentAckQueueSupplier;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentQueueSupplier;
+import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
 import fr.pantheonsorbonne.ufr27.miage.service.*;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.*;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -22,20 +21,14 @@ import org.glassfish.jersey.process.internal.RequestScoped;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import fr.pantheonsorbonne.ufr27.miage.conf.EMFFactory;
-import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
-import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
-import fr.pantheonsorbonne.ufr27.miage.dao.DesserteReelleDAO;
-import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
-import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
-import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
-import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
-import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.JMSProducer;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentAckQueueSupplier;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentQueueSupplier;
-import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
+import javax.inject.Singleton;
+import javax.jms.ConnectionFactory;
+import javax.jms.Queue;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import java.io.IOException;
+import java.net.URI;
+import java.util.Locale;
 
 /**
  * Main class.
@@ -79,6 +72,7 @@ public class Main {
 						bind(TrainServiceImpl.class).to(TrainService.class);
 						bind(DesserteReelleDAO.class).to(DesserteReelleDAO.class);
 						bind(TrajetDAO.class).to(TrajetDAO.class);
+						bind(GareDAO.class).to(GareDAO.class);
 
 					}
 

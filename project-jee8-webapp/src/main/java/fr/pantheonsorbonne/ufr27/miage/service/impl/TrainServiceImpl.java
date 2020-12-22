@@ -1,10 +1,11 @@
 package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.DesserteReelleDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.GareDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo;
 import fr.pantheonsorbonne.ufr27.miage.service.TrainService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,11 +31,15 @@ import static fr.pantheonsorbonne.ufr27.miage.util.TimeUtil.calculateIfDelay;
 @ManagedBean
 @Slf4j
 public class TrainServiceImpl implements TrainService {
+
     @Inject
     TrajetDAO trajetDAO;
 
     @Inject
 	DesserteReelleDAO desserteReelleDAO;
+
+    @Inject
+	GareDAO gareDAO;
 
 	/**
      * - Récupère le trajet concerné depuis la base de données
@@ -71,14 +77,18 @@ public class TrainServiceImpl implements TrainService {
         }
 
         if (delay.toMinutes() >= 120) {
-			processExceptionalStop(trajet, liveInfo.getTimestamp(), liveInfo.getNextGareIndex());
+			processExceptionalStop(trajet, liveInfo.getNextGareIndex());
+		}
+
+        if (delay.toMinutes() >= 60) {
+        	waitForThisTrainWhenTER(trajet, liveInfo, delay);
 		}
 
     }
 
-	private void processExceptionalStop(Trajet trajet, String timestamp, int gareIndex) {
+	private void processExceptionalStop(Trajet trajet, int gareIndex) {
 		// Récupérer les trajets ayant le même parcours géographique
-		List<Trajet> sameParcours = trajetDAO.getTrajetByParcoursId(trajet.getParcoursId());
+		List<Trajet> sameParcours = trajetDAO.getTrajetsByParcoursId(trajet.getParcoursId());
 
 		// Filtrer : Ne garder que les trajets partis après celui en retard
 		sameParcours = sameParcours.stream()
@@ -127,6 +137,79 @@ public class TrainServiceImpl implements TrainService {
 			desserteReelleDAO.setDesservi(dr, new Object[]{true, newDesserteDate});
 		}
 	}
+
+	/**
+	 * - UN TER POURRA ATTENDRE UN TGV MAIS PAS L'INVERSE
+	 */
+	public void waitForThisTrainWhenTER(Trajet trajet, LiveInfo liveInfo, Duration delay) {
+    	// Ne garder que les DR après la dernière gare parcourue
+		List<DesserteReelle> desserteReelles = trajet.getDesserteReelles().stream()
+				.filter(d -> d.getSeq() >= liveInfo.getNextGareIndex())
+				.collect(Collectors.toList());
+
+		// Pour ne pas affecter le même train plusieurs fois si plusieurs gares communes
+        List<Integer> affectedTrainIds = new ArrayList<>();
+
+		for (DesserteReelle desserteReelle : desserteReelles) {
+			Gare thisGare = gareDAO.getGareBySeqNumber(trajet, desserteReelle.getSeq());
+			List<Trajet> trajets;
+			try {
+				// Tous les trajets qui passent par cette gare
+				trajets = trajetDAO.getTrajetsByGareId(thisGare.getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+				continue;
+			}
+
+			// Ne garder que les TER passant par cette gare moins d'1h après de ce train
+			trajets = trajets.stream().filter(t -> t.getType().equals("TER"))
+					.filter(t ->
+							Duration.between(
+									dateToLocalDateTime(trajet.getArriveeTheoriqueToGare(thisGare.getId())),
+									dateToLocalDateTime(t.getArriveeTheoriqueToGare(thisGare.getId()))
+							).toMinutes() <= 60
+					)
+					.filter(t ->
+                            dateToLocalDateTime(t.getArriveeTheoriqueToGare(thisGare.getId()))
+                                    .isAfter(dateToLocalDateTime(trajet.getArriveeTheoriqueToGare(thisGare.getId())))
+							|| dateToLocalDateTime(t.getArriveeTheoriqueToGare(thisGare.getId()))
+                                    .isEqual(dateToLocalDateTime(trajet.getArriveeTheoriqueToGare(thisGare.getId())))
+					)
+					.collect(Collectors.toList());
+
+			if (trajets.isEmpty()) continue;
+
+			for (Trajet t : trajets) {
+			    if (affectedTrainIds.contains(t.getId())) continue;
+
+				List<DesserteReelle> dr_toUpdate = desserteReelleDAO.getAllOfTrajet(t.getId()).stream()
+						.filter(d -> d.getSeq() >= t.getDesserteReelleOfGare(thisGare.getId()).getSeq())
+						.filter(DesserteReelle::isDesservi)
+						.collect(Collectors.toList());
+
+				for (DesserteReelle dr : dr_toUpdate) {
+
+					Date newDesserteDate = localDateTimeToDate(
+							dateToLocalDateTime(dr.getArrivee())
+									.plus(delay.toSeconds() + 600, ChronoUnit.SECONDS)
+					);
+
+					desserteReelleDAO.setDesservi(dr, new Object[]{true, newDesserteDate});
+				}
+
+				affectedTrainIds.add(t.getId());
+			}
+
+		}
+	}
+
+
+
+
+
+
+
+
 
 
 
@@ -178,10 +261,15 @@ public class TrainServiceImpl implements TrainService {
 		}
 	}
 
+
+
+
+
+
 	@Override
 	public void processCancel(int id, String conditions) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -208,5 +296,5 @@ public class TrainServiceImpl implements TrainService {
 		return null;
 	}
 
-	
+
 }

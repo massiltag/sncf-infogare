@@ -25,19 +25,27 @@ public class TrajetDAO implements Dao<Trajet> {
 		return t;
 	}
 
+	public List getTrajetsByGareId(int gareId) {
+		return em.createQuery("SELECT t " +
+				"FROM Trajet t, DesserteReelle d " +
+				"WHERE t.id = d.trajet.id " +
+				"AND d.gare.id = " + gareId + " " +
+				"AND d.desservi = true " +
+				"ORDER BY d.arrivee ASC")
+				.getResultList();
+	}
+
+
+	public List<Trajet> getTrajetsByParcoursId(int parcoursId) {
+		return em.createQuery("SELECT t FROM Trajet t WHERE t.parcoursId = " + parcoursId)
+				.getResultList();
+	}
+
 	public void setDessertesReelles(Trajet trajet, List<DesserteReelle> desserteReelles) {
 		em.getTransaction().begin();
 		trajet.setDesserteReelles(desserteReelles);
 		em.getTransaction().commit();
 	}
-
-
-	public List<Trajet> getTrajetByParcoursId(int parcoursId) {
-		return em.createQuery("SELECT t FROM Trajet t WHERE t.parcoursId = " + parcoursId)
-				.getResultList();
-	}
-
-
 
 	@Override
 	public List<Trajet> getAll() {

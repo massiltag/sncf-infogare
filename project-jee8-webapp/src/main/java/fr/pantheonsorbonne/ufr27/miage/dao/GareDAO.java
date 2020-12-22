@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -18,6 +19,14 @@ public class GareDAO implements Dao<Gare> {
             throw new NoSuchElementException("Pas de trajet correspondant");
         }
         return g;
+    }
+
+    public Gare getGareBySeqNumber(Trajet t, int seq) {
+        return (Gare) em.createQuery("SELECT g from Trajet t, Gare g, DesserteReelle d " +
+                "WHERE t.id = d.trajet.id " +
+                "AND g.id = d.gare.id " +
+                "AND d.trajet.id = " + t.getId() + " " +
+                "AND d.seq = " + seq).getResultList().get(0);
     }
 
     @Override

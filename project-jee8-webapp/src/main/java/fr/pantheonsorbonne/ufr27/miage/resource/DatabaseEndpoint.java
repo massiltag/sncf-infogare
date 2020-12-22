@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.resource;
 
+import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
 import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteTheorique;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
@@ -28,6 +29,19 @@ public class DatabaseEndpoint {
     @Inject
     EntityManager em;
 
+    @Inject
+    TrajetDAO trajetDAO;
+
+    @GET
+    @Path("test")
+    public Response testDB() {
+        List<Trajet> trajets = trajetDAO.getTrajetsByGareId(4);
+        for (Trajet trajet : trajets) {
+            System.out.println(trajet.toString());
+        }
+        return Response.status(201).build();
+    }
+
     @GET
     @Consumes(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("populate")
@@ -43,7 +57,45 @@ public class DatabaseEndpoint {
 
             LocalDateTime baseDate = LocalDateTime.of(2020, 1, 1, 12, 0);
 
-            /* Populate with data :
+            /* TER
+                Amiens 12h30
+                Lille 13h
+             */
+            Trajet ter = Trajet.builder()
+                    .desserteTheoriques(new ArrayList<>())
+                    .desserteReelles(new ArrayList<>())
+                    .parcoursId(2)
+                    .type("TER")
+                    .build();
+            ter.addDesserteTheoriques(List.of(
+                    DesserteTheorique.builder()
+                            .gare(gare3)
+                            .arrivee(localDateTimeToDate(baseDate.plusMinutes(30)))
+                            .desservi(true)
+                            .build(),
+                    DesserteTheorique.builder()
+                            .gare(gare4)
+                            .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
+                            .desservi(true)
+                            .build()
+                    )
+            );
+            ter.addDesserteReelles(List.of(
+                    DesserteReelle.builder()
+                            .gare(gare3)
+                            .arrivee(localDateTimeToDate(baseDate.plusMinutes(30)))
+                            .desservi(true)
+                            .build(),
+                    DesserteReelle.builder()
+                            .gare(gare4)
+                            .arrivee(localDateTimeToDate(baseDate.plusHours(1)))
+                            .desservi(true)
+                            .build()
+                    )
+            );
+
+
+            /* TGV 1
                 Bordeaux 8h
                 Paris 12h
                 Amiens 12h30
@@ -100,7 +152,7 @@ public class DatabaseEndpoint {
                             .build()
             ));
 
-            /* Populate with data :
+            /* TGV 2
                 Bordeaux 9h
                 Paris 13h
                 Amiens -
@@ -157,8 +209,9 @@ public class DatabaseEndpoint {
 
 
             em.persist(trajet);
-            Thread.sleep(500);
+            Thread.sleep(1000);
             em.persist(trajet2);
+            em.persist(ter);
 
             em.getTransaction().commit();
             em.close();
