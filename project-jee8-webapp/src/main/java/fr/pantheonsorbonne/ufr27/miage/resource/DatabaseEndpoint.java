@@ -66,7 +66,6 @@ public class DatabaseEndpoint {
              */
             Trajet trajet = Trajet.builder()
                     .id(1)
-                    .idMetier(1)
                     .desserteTheoriques(new ArrayList<>())
                     .desserteReelles(new ArrayList<>())
                     .parcoursId(1)
