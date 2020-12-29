@@ -46,10 +46,16 @@ public class TrainServiceImpl implements TrainService {
 	RuptureService ruptureService;
 
 	/**
-     * - Récupère le trajet concerné depuis la base de données
-     * - Détermine si un retard a survenu à l'aide de calculateIfDelay
-     * - Modifie les temps d'arrivée réels en fonction du retard (éventuellement)
-     */
+	 * Méthode principale, déclenchée à la réception des informations en direct depuis le train ({@link LiveInfo})
+	 * <ul>
+	 *     <li> Reçoit l'information en direct du train, recupère le trajet concerné depuis la base de données. </li>
+	 *     <li> Détermine si un retard est survenu à l'aide de
+	 *     		{@link fr.pantheonsorbonne.ufr27.miage.util.TimeUtil#calculateIfDelay(Trajet, LiveInfo)}. </li>
+	 *     <li> Déclenche les règles métier en appelants les différents services selon les circonstances. </li>
+	 * </ul>
+	 * @param liveInfo	Les informations en direct sur le trajet, envoyées par le train
+	 * @param trajetId	ID du trajet concerné
+	 */
     @Override
     public void processLiveInfo(LiveInfo liveInfo, int trajetId) {
         log.info("Received LiveInfo of train " + trajetId);
@@ -97,6 +103,14 @@ public class TrainServiceImpl implements TrainService {
 
     }
 
+	/**
+	 * <p>
+	 *     Implémentation de la règle métier où <b>si un train a un retard de plus de 2 heures à une gare,
+	 *     le prochain train sur son parcours desservira cette gare s'il ne la desservait pas avant.</b>
+	 * </p>
+	 * @param trajet	Le trajet concerné
+	 * @param gareIndex	L'index de la gare sur le trajet
+	 */
 	private void processExceptionalStop(Trajet trajet, int gareIndex) {
 		// Récupérer les trajets ayant le même parcours géographique
 		List<Trajet> sameParcours = trajetDAO.getTrajetsByParcoursId(trajet.getParcoursId());
@@ -150,7 +164,13 @@ public class TrainServiceImpl implements TrainService {
 	}
 
 	/**
-	 * - UN TER POURRA ATTENDRE UN TGV MAIS PAS L'INVERSE
+	 * <p>
+	 *     Implémentation de la règle métier où <b>les TER passant par les gares desservies
+	 *     par un TGV en retard attendent ce TGV.</b>
+	 * </p>
+	 * @param trajet	Le trajet concerné
+	 * @param liveInfo	Les informations en direct
+	 * @param delay		Le retard calculé
 	 */
 	public void waitForThisTrainWhenTER(Trajet trajet, LiveInfo liveInfo, Duration delay) {
     	// Ne garder que les DR après la dernière gare parcourue

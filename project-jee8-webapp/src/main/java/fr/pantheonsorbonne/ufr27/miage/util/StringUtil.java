@@ -14,6 +14,10 @@ public class StringUtil {
     public static final String ANSI_WHITE = "\u001B[37m";
 
 
+    /**
+     * Sert à mettre de la vie dans les logs avec de jolis prints en couleur.<br>
+     * Bisou
+     */
     public static String printColor(String out, String color) {
         return color + out + ANSI_RESET;
     }

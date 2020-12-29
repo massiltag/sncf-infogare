@@ -39,7 +39,7 @@ public class RuptureServiceImpl implements RuptureService {
 
     /**
      * <p>
-     *     Méthode qui détermine si les correspondances des passagers d'un train sont en rupture. <br/>
+     *     Méthode qui détermine si les correspondances des passagers d'un train sont en rupture. <br>
      *     Persiste le résultat en base (champs rupture: boolean, newDate: Date)
      * </p>
      *
@@ -78,7 +78,7 @@ public class RuptureServiceImpl implements RuptureService {
 
     /**
      * <p>
-     *     Vérifie si il y a assez de passagers en rupture de correspondance (50) <br/>
+     *     Vérifie si il y a assez de passagers en rupture de correspondance (50) <br>
      *     Retarde le(s) train(s) concerné si oui, avec l'horaire du train le plus en retard + 10 minutes
      * </p>
      */

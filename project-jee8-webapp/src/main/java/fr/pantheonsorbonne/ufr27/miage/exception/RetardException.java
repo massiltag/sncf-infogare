@@ -7,7 +7,7 @@ public class RetardException extends Exception{
 	 * 
 	 * un TER attend TGV
 	 * 
-	 * retarder un train si le nombre de passagers ayant reservés en rupture de correspondance est < 50
+	 * retarder un train si le nombre de passagers ayant reservés en rupture de correspondance est inférieur à 50
 	 * 
 	 * si au moins l'une des 2 conditions de desserte exceptionnelle n'est pas vérifée
 	 */

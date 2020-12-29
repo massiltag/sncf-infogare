@@ -38,10 +38,13 @@ public class TrainEndpoint {
         trainService.processCancel(id, conditions);
         return Response.status(200, "Train canceled.").build();
     }
-    
+
     /**
-     * Envoi d'un retard par le train en signalant la cause 
-     * @param condition : La cause du retard 
+     * Envoi d'un retard par le train en signalant la cause
+     *
+     * @param liveInfo
+     * @param id
+     * @param conditions La cause du retard
      * @return
      */
     @POST

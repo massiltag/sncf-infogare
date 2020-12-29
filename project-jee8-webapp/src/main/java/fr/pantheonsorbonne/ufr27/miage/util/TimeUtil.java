@@ -16,11 +16,17 @@ import static fr.pantheonsorbonne.ufr27.miage.util.StringUtil.printColor;
 public class TimeUtil {
     private final static int TOLERATED_PERCENTAGE = 10;
 
+    /**
+     * <p>
+     *     Calcule le retard d'un train selon les informations reçues le concernant.<br>
+     *     Compare le pourcentage et l'heure reçus au taux normal (linéaire) et détermine
+     *     le retard au format {@link Duration}
+     * </p>
+     * @param trajet    Le trajet concerné
+     * @param liveInfo  Les informations en direct sur le trajet, envoyées par le train
+     * @return Le retard au format {@link Duration}
+     */
     public static Duration calculateIfDelay(Trajet trajet, LiveInfo liveInfo) {
-        /**
-         * ICI : Récupérer les informations théoriques du train depuis la base de données,
-         *  Comparer avec les informations reçues
-         */
         double normalPercentage = shouldBeAtPercent(
                 dateToLocalDateTime(trajet.getDesserteTheoriques().get(liveInfo.getLastGareIndex() - 1).getArrivee()),
                 dateToLocalDateTime(trajet.getDesserteTheoriques().get(liveInfo.getNextGareIndex() - 1).getArrivee()),
@@ -47,6 +53,15 @@ public class TimeUtil {
         return Duration.ofMillis(0);
     }
 
+    /**
+     * <p>
+     *     Calcule le pourcentage normal (position d'une date entre deux dates)
+     * </p>
+     * @param departure Date de départ
+     * @param arrival   Date d'arrivée
+     * @param live      Date reçue
+     * @return  Pourcentage entre le départ et l'arrivée
+     */
     public static double shouldBeAtPercent(LocalDateTime departure, LocalDateTime arrival, LocalDateTime live) {
         Duration totalDuration = Duration.between(departure, arrival);
         Duration betweenDuration = Duration.between(departure, live);
@@ -54,7 +69,15 @@ public class TimeUtil {
         return ((double)betweenDuration.toSeconds()*100/(double)totalDuration.toSeconds());
     }
 
-
+    /**
+     * <p>
+     *     Ajoute un objet {@link Duration} à une {@link Date} en convertissant à {@link LocalDateTime}
+     *     car impossible sur {@link Date}
+     * </p>
+     * @param date
+     * @param duration
+     * @return Objet {@link Date} modifié
+     */
     public static Date addDurationToDate(Date date, Duration duration) {
         return localDateTimeToDate(
                 dateToLocalDateTime(date).plus(duration)
