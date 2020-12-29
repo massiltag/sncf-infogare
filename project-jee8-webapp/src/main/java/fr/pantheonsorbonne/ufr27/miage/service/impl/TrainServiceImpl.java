@@ -7,6 +7,7 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo;
+import fr.pantheonsorbonne.ufr27.miage.service.RuptureService;
 import fr.pantheonsorbonne.ufr27.miage.service.TrainService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,6 +41,9 @@ public class TrainServiceImpl implements TrainService {
 
     @Inject
 	GareDAO gareDAO;
+
+    @Inject
+	RuptureService ruptureService;
 
 	/**
      * - Récupère le trajet concerné depuis la base de données
@@ -76,12 +80,19 @@ public class TrainServiceImpl implements TrainService {
             trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
         }
 
+        // Arrêt exceptionnel
         if (delay.toMinutes() >= 120) {
 			processExceptionalStop(trajet, liveInfo.getNextGareIndex());
 		}
 
-        if (delay.toMinutes() >= 60) {
+        // TER attend TGV si retard entre 1h et 3h
+        if (delay.toMinutes() >= 60 && delay.toMinutes() <= 180) {
         	waitForThisTrainWhenTER(trajet, liveInfo, delay);
+		}
+
+        // Comptabiliser la rupture de correspondance si retard a moins de 2h
+		if (delay.toMinutes() <= 120) {
+			ruptureService.processRuptureCorrespondance(trajet);
 		}
 
     }
@@ -202,15 +213,6 @@ public class TrainServiceImpl implements TrainService {
 
 		}
 	}
-
-
-
-
-
-
-
-
-
 
 
 	/*

@@ -25,6 +25,10 @@ public class TrajetDAO implements Dao<Trajet> {
 		return t;
 	}
 
+	public List<Trajet> findAll() {
+		return em.createQuery("SELECT t FROM Trajet t").getResultList();
+	}
+
 	public List getTrajetsByGareId(int gareId) {
 		return em.createQuery("SELECT t " +
 				"FROM Trajet t, DesserteReelle d " +

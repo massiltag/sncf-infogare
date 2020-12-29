@@ -16,7 +16,7 @@ public class GareDAO implements Dao<Gare> {
     public Gare find(int gareId) {
         Gare g = em.find(Gare.class, gareId);
         if (g == null) {
-            throw new NoSuchElementException("Pas de trajet correspondant");
+            throw new NoSuchElementException("Pas de gare correspondante");
         }
         return g;
     }
