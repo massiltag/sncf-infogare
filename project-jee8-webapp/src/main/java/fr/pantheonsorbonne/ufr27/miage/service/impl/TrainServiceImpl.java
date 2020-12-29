@@ -243,29 +243,34 @@ public class TrainServiceImpl implements TrainService {
 				finalDelay = delay.plus(Duration.ofMinutes(30));
 				log.info("Delay with Condition is " + finalDelay.toMinutes() + " min");
 				break;
+			case "Seisme_DANGER" :
+				finalDelay = null;
+				trajetDAO.delete(trajet);
+				log.info("Train " + id + " was canceled due to earthquake.");
+				break;
 			default :
 				finalDelay = delay.plus(Duration.ofMinutes(5));
 				log.info("Delay with Condition is " + finalDelay.toMinutes() + " min");
 				break;
 		}
-
+	
 		List<DesserteReelle> newDesserteInfo;
-		if (Math.abs(delay.toSeconds()) > 0) {
-			newDesserteInfo = trajet.getDesserteReelles().stream()
-					.map(dr -> {
-						if (dr.getSeq() >= liveInfo.getNextGareIndex() && dr.isDesservi())
-							dr.addDuration(finalDelay);
-						return dr;
-					}).collect(Collectors.toList());
-			trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
+		if (finalDelay != null) {	
+			if (Math.abs(delay.toSeconds()) > 0) {
+				newDesserteInfo = trajet.getDesserteReelles().stream()
+						.map(dr -> {
+							if (dr.getSeq() >= liveInfo.getNextGareIndex() && dr.isDesservi())
+								dr.addDuration(finalDelay);
+							return dr;
+						}).collect(Collectors.toList());
+				trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
+			}
 		}
 	}
 
-
-
-
-
-
+	/*
+	 * METHODES CI-DESSOUS NE SERONT PAS UTILISER DANS NOTRE CAS
+	 */
 	@Override
 	public void processCancel(int id, String conditions) {
 		// TODO Auto-generated method stub
