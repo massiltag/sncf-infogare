@@ -51,7 +51,7 @@ public class TrainServiceImpl implements TrainService {
 	 *     <li> Reçoit l'information en direct du train, recupère le trajet concerné depuis la base de données. </li>
 	 *     <li> Détermine si un retard est survenu à l'aide de
 	 *     		{@link fr.pantheonsorbonne.ufr27.miage.util.TimeUtil#calculateIfDelay(Trajet, LiveInfo)}. </li>
-	 *     <li> Déclenche les règles métier en appelants les différents services selon les circonstances. </li>
+	 *     <li> Déclenche les règles métier en appelant les différents services selon les circonstances. </li>
 	 * </ul>
 	 * @param liveInfo	Les informations en direct sur le trajet, envoyées par le train
 	 * @param trajetId	ID du trajet concerné
