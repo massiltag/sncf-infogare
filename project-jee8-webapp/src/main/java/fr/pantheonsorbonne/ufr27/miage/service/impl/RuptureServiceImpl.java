@@ -5,6 +5,7 @@ import fr.pantheonsorbonne.ufr27.miage.dao.DesserteReelleDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PassagerDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Correspondance;
+import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Passager;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
 import fr.pantheonsorbonne.ufr27.miage.service.RuptureService;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +26,8 @@ import static fr.pantheonsorbonne.ufr27.miage.util.DateUtil.localDateTimeToDate;
 @ManagedBean
 @Slf4j
 public class RuptureServiceImpl implements RuptureService {
+
+    private static int TOLERATED_NB_RUPTURES = 5;
 
     @Inject
     TrajetDAO trajetDAO;
@@ -78,7 +82,7 @@ public class RuptureServiceImpl implements RuptureService {
 
     /**
      * <p>
-     *     Vérifie si il y a assez de passagers en rupture de correspondance (50) <br>
+     *     Vérifie si il y a assez de passagers en rupture de correspondance ({@link #TOLERATED_NB_RUPTURES}) <br>
      *     Retarde le(s) train(s) concerné si oui, avec l'horaire du train le plus en retard + 10 minutes
      * </p>
      */
@@ -90,7 +94,7 @@ public class RuptureServiceImpl implements RuptureService {
             List<Correspondance> ruptures = correspondanceDAO.findByTrainAndRupture(trajet.getId(), true);
 
             // Si > 50
-            if (ruptures.size() >= 50) {
+            if (ruptures.size() >= TOLERATED_NB_RUPTURES) {
                 // Trouver la correspondance la plus en retard
                 LocalDateTime latestNewDate = LocalDateTime.MIN;
                 Correspondance c = Correspondance.builder().build();
@@ -103,10 +107,22 @@ public class RuptureServiceImpl implements RuptureService {
                 }
 
                 // Retarder ce train à la nouvelle horaire de la correspondance + 10 minutes
-                desserteReelleDAO.setDesservi(
-                        trajet.getDesserteReelleOfGare(c.getGare().getId()),
-                        new Object[]{true, localDateTimeToDate(latestNewDate.plusMinutes(10))}
+                Duration delay = Duration.between(
+                        dateToLocalDateTime(trajet.getDesserteReelleOfGare(c.getGare().getId()).getArrivee()),
+                        latestNewDate.plusMinutes(10)
                 );
+
+                DesserteReelle fromThis = trajet.getDesserteReelleOfGare(c.getGare().getId());
+                for (DesserteReelle desserteReelle : trajet.getDesserteReelles()) {
+                    if (desserteReelle.getSeq() >= fromThis.getSeq()) {
+                        LocalDateTime initialArrivee = dateToLocalDateTime(desserteReelle.getArrivee());
+                        desserteReelleDAO.setDesservi(
+                                desserteReelle,
+                                new Object[]{true, localDateTimeToDate(initialArrivee.plus(delay))}
+                        );
+                    }
+                }
+
             }
 
         }

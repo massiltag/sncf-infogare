@@ -70,9 +70,12 @@ public class Main {
 
 						// SNCF
 						bind(TrainServiceImpl.class).to(TrainService.class);
+						bind(RuptureServiceImpl.class).to(RuptureService.class);
 						bind(DesserteReelleDAO.class).to(DesserteReelleDAO.class);
 						bind(TrajetDAO.class).to(TrajetDAO.class);
 						bind(GareDAO.class).to(GareDAO.class);
+						bind(PassagerDAO.class).to(PassagerDAO.class);
+						bind(CorrespondanceDAO.class).to(CorrespondanceDAO.class);
 
 					}
 

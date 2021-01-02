@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Passager {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
     @ManyToOne
@@ -23,4 +23,8 @@ public class Passager {
     @OneToOne(cascade = CascadeType.ALL)
     Correspondance correspondance;
 
+    public void setCorrespondance(Correspondance correspondance) {
+        this.correspondance = correspondance;
+        correspondance.setPassager(this);
+    }
 }

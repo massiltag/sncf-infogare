@@ -1,10 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.resource;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
-import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
-import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteTheorique;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
+import fr.pantheonsorbonne.ufr27.miage.jpa.*;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -54,6 +51,7 @@ public class DatabaseEndpoint {
             Gare gare2 = Gare.builder().nom("Paris Montparnasse").build();
             Gare gare3 = Gare.builder().nom("Gare d'Amiens").build();
             Gare gare4 = Gare.builder().nom("Lille Flandres").build();
+            Gare gare5 = Gare.builder().nom("Lyon Perrache").build();
 
             LocalDateTime baseDate = LocalDateTime.of(2020, 1, 1, 12, 0);
 
@@ -64,14 +62,14 @@ public class DatabaseEndpoint {
                 Amiens 12h30
                 Lille 13h
              */
-            Trajet trajet = Trajet.builder()
+            Trajet tgv1 = Trajet.builder()
                     .id(1)
                     .desserteTheoriques(new ArrayList<>())
                     .desserteReelles(new ArrayList<>())
                     .parcoursId(1)
                     .type("TGV")
                     .build();
-            trajet.addDesserteTheoriques(List.of(
+            tgv1.addDesserteTheoriques(List.of(
                     DesserteTheorique.builder()
                             .gare(gare)
                             .arrivee(localDateTimeToDate(baseDate.minusHours(4)))
@@ -93,7 +91,7 @@ public class DatabaseEndpoint {
                             .desservi(true)
                             .build()
             ));
-            trajet.addDesserteReelles(List.of(
+            tgv1.addDesserteReelles(List.of(
                     DesserteReelle.builder()
                             .gare(gare)
                             .arrivee(localDateTimeToDate(baseDate.minusHours(4)))
@@ -122,14 +120,14 @@ public class DatabaseEndpoint {
                 Amiens -
                 Lille 14h
              */
-            Trajet trajet2 = Trajet.builder()
+            Trajet tgv2 = Trajet.builder()
                     .id(2)
                     .desserteTheoriques(new ArrayList<>())
                     .desserteReelles(new ArrayList<>())
                     .parcoursId(1)
                     .type("TGV")
                     .build();
-            trajet2.addDesserteTheoriques(List.of(
+            tgv2.addDesserteTheoriques(List.of(
                     DesserteTheorique.builder()
                             .gare(gare)
                             .arrivee(localDateTimeToDate(baseDate.minusHours(3)))
@@ -150,7 +148,7 @@ public class DatabaseEndpoint {
                             .desservi(true)
                             .build()
             ));
-            trajet2.addDesserteReelles(List.of(
+            tgv2.addDesserteReelles(List.of(
                     DesserteReelle.builder()
                             .gare(gare)
                             .arrivee(localDateTimeToDate(baseDate.minusHours(3)))
@@ -177,10 +175,10 @@ public class DatabaseEndpoint {
                 Lille 13h
              */
             Trajet ter = Trajet.builder()
-                    .id(3)
+                    .id(4)
                     .desserteTheoriques(new ArrayList<>())
                     .desserteReelles(new ArrayList<>())
-                    .parcoursId(2)
+                    .parcoursId(4)
                     .type("TER")
                     .build();
             ter.addDesserteTheoriques(List.of(
@@ -210,11 +208,68 @@ public class DatabaseEndpoint {
                     )
             );
 
+            /*
+                - Paris 12h15
+                - Lyon 15h15
+             */
+            Trajet tgv3 = Trajet.builder()
+                    .id(3)
+                    .desserteTheoriques(new ArrayList<>())
+                    .desserteReelles(new ArrayList<>())
+                    .parcoursId(3)
+                    .type("TGV")
+                    .build();
+            tgv3.addDesserteTheoriques(List.of(
+                    DesserteTheorique.builder()
+                            .gare(gare2)
+                            .arrivee(localDateTimeToDate(LocalDateTime.of(2020, 1,1,12, 15)))
+                            .desservi(true)
+                            .build(),
+                    DesserteTheorique.builder()
+                            .gare(gare5)
+                            .arrivee(localDateTimeToDate(LocalDateTime.of(2020, 1,1,15, 15)))
+                            .desservi(true)
+                            .build()
+                    )
+            );
+            tgv3.addDesserteReelles(List.of(
+                    DesserteReelle.builder()
+                            .gare(gare2)
+                            .arrivee(localDateTimeToDate(LocalDateTime.of(2020, 1,1,12, 15)))
+                            .desservi(true)
+                            .build(),
+                    DesserteReelle.builder()
+                            .gare(gare5)
+                            .arrivee(localDateTimeToDate(LocalDateTime.of(2020, 1,1,15, 15)))
+                            .desservi(true)
+                            .build()
+                    )
+            );
 
-            em.persist(trajet);
-            Thread.sleep(1000);
-            em.persist(trajet2);
+            // PASSAGERS
+            Passager p1 = Passager.builder().build();
+            p1.setCorrespondance(Correspondance.builder().id(1).gare(gare2).trajet(tgv3).rupture(false).build());
+
+            Passager p2 = Passager.builder().build();
+            p2.setCorrespondance(Correspondance.builder().id(2).gare(gare2).trajet(tgv3).rupture(false).build());
+
+            Passager p3 = Passager.builder().build();
+            p3.setCorrespondance(Correspondance.builder().id(3).gare(gare2).trajet(tgv3).rupture(false).build());
+
+            Passager p4 = Passager.builder().build();
+            p4.setCorrespondance(Correspondance.builder().id(4).gare(gare2).trajet(tgv3).rupture(false).build());
+
+            Passager p5 = Passager.builder().build();
+            p5.setCorrespondance(Correspondance.builder().id(5).gare(gare2).trajet(tgv3).rupture(false).build());
+
+            tgv1.setPassagers(List.of(p1, p2, p3, p4, p5));
+
+
+            em.persist(tgv1);
+            em.persist(tgv2);
+            em.persist(tgv3);
             em.persist(ter);
+
 
             em.getTransaction().commit();
             em.close();

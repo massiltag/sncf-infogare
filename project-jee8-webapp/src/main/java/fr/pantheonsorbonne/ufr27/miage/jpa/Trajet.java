@@ -2,7 +2,10 @@ package fr.pantheonsorbonne.ufr27.miage.jpa;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.List;
 
@@ -30,10 +33,19 @@ public class Trajet {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trajet")
 	List<DesserteTheorique> desserteTheoriques;
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trajet")
+	List<Passager> passagers;
+
 	public Trajet() {
 
 	}
 
+	public void setPassagers(List<Passager> passagers) {
+		this.passagers = passagers;
+		for (Passager passager : passagers) {
+			passager.setTrajet(this);
+		}
+	}
 
 	public void addDesserteReelle(DesserteReelle desserteReelle) {
 		int seq = 0;

@@ -96,8 +96,8 @@ public class TrainServiceImpl implements TrainService {
         	waitForThisTrainWhenTER(trajet, liveInfo, delay);
 		}
 
-        // Comptabiliser la rupture de correspondance si retard a moins de 2h
-		if (delay.toMinutes() <= 120) {
+        // Comptabiliser la rupture de correspondance si retard a moins de 2h30 de retard
+		if (delay.toMinutes() <= 150) {
 			ruptureService.processRuptureCorrespondance(trajet);
 		}
 

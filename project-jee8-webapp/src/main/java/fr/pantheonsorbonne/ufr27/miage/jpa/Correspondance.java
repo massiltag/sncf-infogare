@@ -15,7 +15,7 @@ import java.util.Date;
 public class Correspondance {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
     @ManyToOne
