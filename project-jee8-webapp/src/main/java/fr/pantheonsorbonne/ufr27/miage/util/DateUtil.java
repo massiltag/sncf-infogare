@@ -8,7 +8,7 @@ import java.util.Date;
 public class DateUtil {
 
     /**
-     * Format de dat choisi pour simplifier le DTO {@link fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo}
+     * Format de date choisi pour simplifier le DTO {@link fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo}
      */
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -42,4 +42,5 @@ public class DateUtil {
     public static LocalDateTime stringToLocalDateTime(String str) {
         return LocalDateTime.parse(str, formatter);
     }
+
 }
