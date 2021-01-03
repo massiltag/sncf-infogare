@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.resource;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.*;
+import fr.pantheonsorbonne.ufr27.miage.service.InfogareSenderService;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -29,14 +30,19 @@ public class DatabaseEndpoint {
     @Inject
     TrajetDAO trajetDAO;
 
+    @Inject
+    InfogareSenderService infogareSenderService;
+
     @GET
     @Path("test")
     public Response testDB() {
-        List<Trajet> trajets = trajetDAO.getTrajetsByGareId(4);
-        for (Trajet trajet : trajets) {
-            System.out.println(trajet.toString());
+        try {
+            infogareSenderService.send("Alexa play despacito");
+            return Response.status(200).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500).build();
         }
-        return Response.status(201).build();
     }
 
     @GET

@@ -1,12 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage;
 
+import fr.pantheonsorbonne.ufr27.miage.jms.TrainSubscriber;
+
 import javax.enterprise.inject.se.SeContainer;
 import javax.enterprise.inject.se.SeContainerInitializer;
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-
-import fr.pantheonsorbonne.ufr27.miage.jms.PaymentProcessorBean;
 
 /**
  * Hello world!
@@ -17,13 +15,13 @@ public class PaymentValidatorApp {
 		// initialize CDI 2.0 SE container
 		SeContainerInitializer initializer = SeContainerInitializer.newInstance();
 
-		try (SeContainer container = initializer.disableDiscovery().addPackages(true, PaymentProcessorBean.class)
+		try (SeContainer container = initializer.disableDiscovery().addPackages(true, TrainSubscriber.class)
 				.initialize()) {
 
-			PaymentProcessorBean processor = container.select(PaymentProcessorBean.class).get();
+			TrainSubscriber handler = container.select(TrainSubscriber.class).get();
 
 			while (true) {
-				processor.consume();
+				handler.consume();
 			}
 
 		}

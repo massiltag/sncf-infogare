@@ -1,18 +1,17 @@
 package fr.pantheonsorbonne.ufr27.miage.jms.conf;
 
-import java.util.Hashtable;
+import org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory;
 
-import javax.annotation.ManagedBean;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
+import javax.jms.Topic;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory;
+import java.util.Hashtable;
 
 /**
  * THis class produces bean to be injected in JMS Classes
@@ -32,6 +31,9 @@ public class JMSProducer {
 		jndiBindings.put("connectionFactory.ConnectionFactory", "tcp://localhost:61616");
 		jndiBindings.put("app/jms/PaymentAckQueue", "PaymentAckQueue");
 		jndiBindings.put("app/jms/PaymentQueue", "PaymentQueue");
+
+		// SNCF
+		jndiBindings.put("topic.TrainTopic", "TrainTopic");
 
 		Context c = null;
 		try {
@@ -62,5 +64,14 @@ public class JMSProducer {
 	public ConnectionFactory getJMSConnectionFactory() throws NamingException {
 		return (ConnectionFactory) JNDI_CONTEXT.lookup("ConnectionFactory");
 	}
+
+
+	// SNCF
+	@Produces
+	@Named("TrainTopic")
+	public Topic getJMSTopic() throws NamingException {
+		return (Topic) JNDI_CONTEXT.lookup("TrainTopic");
+	}
+
 
 }

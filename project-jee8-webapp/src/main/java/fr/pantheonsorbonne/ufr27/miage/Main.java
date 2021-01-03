@@ -6,10 +6,8 @@ import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
 import fr.pantheonsorbonne.ufr27.miage.dao.*;
 import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
 import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.JMSProducer;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentAckQueueSupplier;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentQueueSupplier;
+import fr.pantheonsorbonne.ufr27.miage.jms.TrainPublisher;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.*;
 import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
 import fr.pantheonsorbonne.ufr27.miage.service.*;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.*;
@@ -24,6 +22,7 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 import javax.inject.Singleton;
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
+import javax.jms.Topic;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
@@ -78,6 +77,11 @@ public class Main {
 						bind(GareDAO.class).to(GareDAO.class);
 						bind(PassagerDAO.class).to(PassagerDAO.class);
 						bind(CorrespondanceDAO.class).to(CorrespondanceDAO.class);
+						bind(InfogareSenderServiceImpl.class).to(InfogareSenderService.class);
+
+						bindFactory(TrainTopicSupplier.class).to(Topic.class).named("TrainTopic")
+								.in(Singleton.class);
+						bind(TrainPublisher.class).to(TrainPublisher.class);
 
 					}
 
@@ -108,8 +112,6 @@ public class Main {
 		System.out.println(String.format(
 				"Jersey app started with WADL available at " + "%sapplication.wadl\nHit enter to stop it...",
 				BASE_URI));
-		System.in.read();
-		server.stop();
 
 	}
 }
