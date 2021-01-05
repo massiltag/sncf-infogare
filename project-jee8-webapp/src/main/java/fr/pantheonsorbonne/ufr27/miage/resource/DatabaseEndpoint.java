@@ -1,8 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.resource;
 
-import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.*;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.InfoDTO;
 import fr.pantheonsorbonne.ufr27.miage.service.InfogareSenderService;
+import fr.pantheonsorbonne.ufr27.miage.service.TrainService;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -28,7 +29,7 @@ public class DatabaseEndpoint {
     EntityManager em;
 
     @Inject
-    TrajetDAO trajetDAO;
+    TrainService trainService;
 
     @Inject
     InfogareSenderService infogareSenderService;
@@ -37,7 +38,20 @@ public class DatabaseEndpoint {
     @Path("test")
     public Response testDB() {
         try {
-            infogareSenderService.send("Alexa play despacito");
+            infogareSenderService.send("PAR", InfoDTO.builder().infoType("BONSOIR PARIS").timestamp("12").build());
+            infogareSenderService.send("LIL", InfoDTO.builder().infoType("YO LILLE").timestamp("74").build());
+            return Response.status(200).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500).build();
+        }
+    }
+
+    @GET
+    @Path("init")
+    public Response initInfogare() {
+        try {
+            trainService.init();
             return Response.status(200).build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,11 +67,11 @@ public class DatabaseEndpoint {
             System.out.println("TEST PERSISTENCE");
             em.getTransaction().begin();
 
-            Gare gare = Gare.builder().nom("Bordeaux Saint-Jean").build();
-            Gare gare2 = Gare.builder().nom("Paris Montparnasse").build();
-            Gare gare3 = Gare.builder().nom("Gare d'Amiens").build();
-            Gare gare4 = Gare.builder().nom("Lille Flandres").build();
-            Gare gare5 = Gare.builder().nom("Lyon Perrache").build();
+            Gare gare = Gare.builder().nom("Bordeaux Saint-Jean").code("BDX").build();
+            Gare gare2 = Gare.builder().nom("Paris Montparnasse").code("PAR").build();
+            Gare gare3 = Gare.builder().nom("Gare d'Amiens").code("AMS").build();
+            Gare gare4 = Gare.builder().nom("Lille Flandres").code("LIL").build();
+            Gare gare5 = Gare.builder().nom("Lyon Perrache").code("LYN").build();
 
             LocalDateTime baseDate = LocalDateTime.of(2020, 1, 1, 12, 0);
 
@@ -73,6 +87,7 @@ public class DatabaseEndpoint {
                     .desserteTheoriques(new ArrayList<>())
                     .desserteReelles(new ArrayList<>())
                     .parcoursId(1)
+                    .name("Bordeaux - Lille par Amiens")
                     .type("TGV")
                     .build();
             tgv1.addDesserteTheoriques(List.of(
@@ -131,6 +146,7 @@ public class DatabaseEndpoint {
                     .desserteTheoriques(new ArrayList<>())
                     .desserteReelles(new ArrayList<>())
                     .parcoursId(1)
+                    .name("Bordeaux - Lille")
                     .type("TGV")
                     .build();
             tgv2.addDesserteTheoriques(List.of(
@@ -185,6 +201,7 @@ public class DatabaseEndpoint {
                     .desserteTheoriques(new ArrayList<>())
                     .desserteReelles(new ArrayList<>())
                     .parcoursId(4)
+                    .name("Amiens - Lille")
                     .type("TER")
                     .build();
             ter.addDesserteTheoriques(List.of(
@@ -223,6 +240,7 @@ public class DatabaseEndpoint {
                     .desserteTheoriques(new ArrayList<>())
                     .desserteReelles(new ArrayList<>())
                     .parcoursId(3)
+                    .name("Paris - Lyon")
                     .type("TGV")
                     .build();
             tgv3.addDesserteTheoriques(List.of(
@@ -276,9 +294,9 @@ public class DatabaseEndpoint {
             em.persist(tgv3);
             em.persist(ter);
 
-
             em.getTransaction().commit();
             em.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

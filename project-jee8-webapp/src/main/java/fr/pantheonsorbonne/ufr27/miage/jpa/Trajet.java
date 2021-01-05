@@ -25,6 +25,8 @@ public class Trajet {
 	 */
 	int parcoursId;
 
+	String name;
+
 	String type;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trajet")

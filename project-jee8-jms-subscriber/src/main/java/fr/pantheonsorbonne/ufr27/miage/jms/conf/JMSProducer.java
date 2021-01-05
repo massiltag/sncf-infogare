@@ -31,7 +31,11 @@ public class JMSProducer {
 		jndiBindings.put("queue.PaymentAckQueue", "PaymentAckQueue");
 
 		// SNCF
-		jndiBindings.put("topic.TrainTopic", "TrainTopic");
+		jndiBindings.put("topic.ParisTopic", "ParisTopic");
+		jndiBindings.put("topic.BordeauxTopic", "BordeauxTopic");
+		jndiBindings.put("topic.AmiensTopic", "AmiensTopic");
+		jndiBindings.put("topic.LilleTopic", "LilleTopic");
+		jndiBindings.put("topic.LyonTopic", "LyonTopic");
 
 		Context c = null;
 		try {
@@ -65,9 +69,33 @@ public class JMSProducer {
 
 	// SNCF
 	@Produces
-	@Named("TrainTopic")
-	public Topic getJMSQueue() throws NamingException {
-		return (Topic) JNDI_CONTEXT.lookup("TrainTopic");
+	@Named("ParisTopic")
+	public Topic getParisJMSTopic() throws NamingException {
+		return (Topic) JNDI_CONTEXT.lookup("ParisTopic");
+	}
+
+	@Produces
+	@Named("BordeauxTopic")
+	public Topic getBordeauxJMSTopic() throws NamingException {
+		return (Topic) JNDI_CONTEXT.lookup("BordeauxTopic");
+	}
+
+	@Produces
+	@Named("AmiensTopic")
+	public Topic getAmiensJMSTopic() throws NamingException {
+		return (Topic) JNDI_CONTEXT.lookup("AmiensTopic");
+	}
+
+	@Produces
+	@Named("LilleTopic")
+	public Topic getLilleJMSTopic() throws NamingException {
+		return (Topic) JNDI_CONTEXT.lookup("LilleTopic");
+	}
+
+	@Produces
+	@Named("LyonTopic")
+	public Topic getLyonJMSTopic() throws NamingException {
+		return (Topic) JNDI_CONTEXT.lookup("LyonTopic");
 	}
 
 

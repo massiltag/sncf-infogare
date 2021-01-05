@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.jpa;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 @Builder
 @Entity
 @AllArgsConstructor
+@Getter
 public class Gare {
 
 	@Id
@@ -19,6 +21,8 @@ public class Gare {
 	String nom;
 
 	public Gare() {}
+
+	String code;
 
 	public int getId() {
 		return id;

@@ -7,7 +7,6 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
-import javax.jms.Topic;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -32,8 +31,6 @@ public class JMSProducer {
 		jndiBindings.put("app/jms/PaymentAckQueue", "PaymentAckQueue");
 		jndiBindings.put("app/jms/PaymentQueue", "PaymentQueue");
 
-		// SNCF
-		jndiBindings.put("topic.TrainTopic", "TrainTopic");
 
 		Context c = null;
 		try {
@@ -63,14 +60,6 @@ public class JMSProducer {
 	@Produces
 	public ConnectionFactory getJMSConnectionFactory() throws NamingException {
 		return (ConnectionFactory) JNDI_CONTEXT.lookup("ConnectionFactory");
-	}
-
-
-	// SNCF
-	@Produces
-	@Named("TrainTopic")
-	public Topic getJMSTopic() throws NamingException {
-		return (Topic) JNDI_CONTEXT.lookup("TrainTopic");
 	}
 
 

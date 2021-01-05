@@ -6,8 +6,12 @@ import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
 import fr.pantheonsorbonne.ufr27.miage.dao.*;
 import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
 import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
-import fr.pantheonsorbonne.ufr27.miage.jms.TrainPublisher;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.*;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.JMSProducer;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentAckQueueSupplier;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentQueueSupplier;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.supplier.*;
+import fr.pantheonsorbonne.ufr27.miage.jms.publisher.*;
 import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
 import fr.pantheonsorbonne.ufr27.miage.service.*;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.*;
@@ -79,9 +83,19 @@ public class Main {
 						bind(CorrespondanceDAO.class).to(CorrespondanceDAO.class);
 						bind(InfogareSenderServiceImpl.class).to(InfogareSenderService.class);
 
-						bindFactory(TrainTopicSupplier.class).to(Topic.class).named("TrainTopic")
-								.in(Singleton.class);
-						bind(TrainPublisher.class).to(TrainPublisher.class);
+						// Topics
+						bindFactory(ParisTopicSupplier.class).to(Topic.class).named("ParisTopic").in(Singleton.class);
+						bindFactory(BordeauxTopicSupplier.class).to(Topic.class).named("BordeauxTopic").in(Singleton.class);
+						bindFactory(AmiensTopicSupplier.class).to(Topic.class).named("AmiensTopic").in(Singleton.class);
+						bindFactory(LilleTopicSupplier.class).to(Topic.class).named("LilleTopic").in(Singleton.class);
+						bindFactory(LyonTopicSupplier.class).to(Topic.class).named("LyonTopic").in(Singleton.class);
+
+						// Publishers
+						bind(ParisPublisher.class).to(ParisPublisher.class).in(Singleton.class);
+						bind(BordeauxPublisher.class).to(BordeauxPublisher.class).in(Singleton.class);
+						bind(AmiensPublisher.class).to(AmiensPublisher.class).in(Singleton.class);
+						bind(LillePublisher.class).to(LillePublisher.class).in(Singleton.class);
+						bind(LyonPublisher.class).to(LyonPublisher.class).in(Singleton.class);
 
 					}
 

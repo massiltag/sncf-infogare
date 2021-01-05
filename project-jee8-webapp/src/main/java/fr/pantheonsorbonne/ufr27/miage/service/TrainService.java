@@ -10,6 +10,8 @@ public interface TrainService {
 
     public void processLiveInfo(LiveInfo liveInfo, int trajetId);
 
+    public void init();
+
 	public void processCancel(int id, String conditions);
 
 	public Trajet processGetTrain(int id);

@@ -144,9 +144,24 @@
 	</xsd:complexType>
 
 
+	<xsd:element name="infoDTO">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="infoType" type="xsd:string"/>
+				<xsd:element name="trainId" type="xsd:int"/>
+				<xsd:element name="trainName" type="xsd:string"/>
+				<xsd:element name="trainType" type="xsd:string"/>
+				<xsd:element name="timestamp" type="xsd:string"/>
+				<!-- in case of disruption -->
+				<xsd:element name="disruptionType" type="EnumConditions"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
 
 
-	<xsd:element name="arrivalsWrapper">
+
+
+	<!--xsd:element name="arrivalsWrapper">
 		<xsd:complexType>
 			<xsd:sequence>
 
@@ -206,13 +221,13 @@
 
 			</xsd:sequence>
 		</xsd:complexType>
-	</xsd:element>
+	</xsd:element-->
 
 
 
 
 
-	<xsd:element name="departuresWrapper">
+	<!--xsd:element name="departuresWrapper">
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element name="departure" minOccurs="0" maxOccurs="unbounded">
@@ -228,9 +243,9 @@
 				</xsd:element>
 			</xsd:sequence>
 		</xsd:complexType>
-	</xsd:element>
+	</xsd:element-->
 
-	<xsd:element name="disruptionsWrapper">
+	<!--xsd:element name="disruptionsWrapper">
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element name="disruption" minOccurs="0" maxOccurs="unbounded">
@@ -255,22 +270,39 @@
 				</xsd:element>
 			</xsd:sequence>
 		</xsd:complexType>
-	</xsd:element>
+	</xsd:element-->
 
 	<xsd:simpleType name="EnumConditions">
-        <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="Pluie"/>
-            <xsd:enumeration value="AccidentHumain"/>
-            <xsd:enumeration value="PanneElec"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-    <xsd:element name="root">
-        <xsd:complexType>
-            <xsd:sequence>
-                <xsd:element name="local" type="EnumConditions"/>
-                <xsd:element name="ref" type="EnumConditions"/>
-            </xsd:sequence>
-        </xsd:complexType>
-    </xsd:element>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Pluie"/>
+			<xsd:enumeration value="AccidentHumain"/>
+			<xsd:enumeration value="PanneElec"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="root">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="local" type="EnumConditions"/>
+				<xsd:element name="ref" type="EnumConditions"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:simpleType name="InfoTypeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Departure"/>
+			<xsd:enumeration value="Arrival"/>
+			<xsd:enumeration value="Transit"/>
+			<xsd:enumeration value="Disruption"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="root2">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="local" type="InfoTypeEnum"/>
+				<xsd:element name="ref" type="InfoTypeEnum"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
 
 </xsd:schema>

@@ -4,11 +4,10 @@ import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.InfoDTO;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.InfoTypeEnum;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo;
-import fr.pantheonsorbonne.ufr27.miage.service.RuptureService;
-import fr.pantheonsorbonne.ufr27.miage.service.StopService;
-import fr.pantheonsorbonne.ufr27.miage.service.TERService;
-import fr.pantheonsorbonne.ufr27.miage.service.TrainService;
+import fr.pantheonsorbonne.ufr27.miage.service.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.ManagedBean;
@@ -39,6 +38,9 @@ public class TrainServiceImpl implements TrainService {
 
     @Inject
 	TERService terService;
+
+    @Inject
+	InfogareSenderService infogareSenderService;
 
 	/**
 	 * Méthode principale, déclenchée à la réception des informations en direct depuis le train ({@link LiveInfo})
@@ -96,7 +98,49 @@ public class TrainServiceImpl implements TrainService {
 			ruptureService.processRuptureCorrespondance(trajet);
 		}
 
+		// Envoyer les informations aux infogares concernés
+		sendGareStates(trajet);
     }
+
+    public void sendGareStates(Trajet trajet) {
+    	List<DesserteReelle> dessertes = trajet.getDesserteReelles();
+
+		// Itérer sur les gares
+    	for (DesserteReelle desserteReelle : dessertes) {
+    		// Construire l'information
+    		InfoDTO infoDTO = InfoDTO.builder()
+					.trainId(trajet.getId())
+					.trainName(trajet.getName())
+					.trainType(trajet.getType())
+					.timestamp(desserteReelle.getArrivee().toString())
+					.build();
+
+    		// Première gare, envoyer un DTO JAXB Départ
+			if (desserteReelle.getSeq() == 1)
+				infoDTO.setInfoType(InfoTypeEnum.DEPARTURE.value());
+			else
+			// Dernière gare, envoyer un DTO JAXB Arrivée
+			if (desserteReelle.getSeq() == dessertes.size())
+				infoDTO.setInfoType(InfoTypeEnum.ARRIVAL.value());
+			else
+			// Gare intermédiaire, envoyer un DTO JAXB Passage
+				infoDTO.setInfoType(InfoTypeEnum.TRANSIT.value());
+
+			// Envoyer l'information
+			infogareSenderService.send(desserteReelle.getGare().getCode(), infoDTO);
+		}
+
+	}
+
+	/**
+	 * <p>
+	 *     Appelée au lancement de l'application, sert à envoyer les informations initiales aux infogares.
+	 * </p>
+	 */
+	public void init() {
+		for (Trajet t : trajetDAO.findAll())
+			sendGareStates(t);
+	}
 
 
 	/*

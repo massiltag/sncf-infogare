@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.ufr27.miage.jms;
+package fr.pantheonsorbonne.ufr27.miage.jms.publisher;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -9,10 +9,10 @@ import java.io.Closeable;
 import java.io.IOException;
 
 @ApplicationScoped
-public class TrainPublisher implements Closeable {
+public class ParisPublisher implements Closeable, Publisher {
 
     @Inject
-    @Named("TrainTopic")
+    @Named("ParisTopic")
     Topic topic;
 
     @Inject
@@ -39,7 +39,6 @@ public class TrainPublisher implements Closeable {
 
     public String publish(String message) {
         try {
-
             this.messagePublisher.send(this.session.createTextMessage(message));
             return message;
         } catch (JMSException e) {
