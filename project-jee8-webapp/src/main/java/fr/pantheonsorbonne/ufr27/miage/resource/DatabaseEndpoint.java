@@ -51,7 +51,7 @@ public class DatabaseEndpoint {
     @Path("init")
     public Response initInfogare() {
         try {
-            trainService.init();
+            trainService.updateInfogares();
             return Response.status(200).build();
         } catch (Exception e) {
             e.printStackTrace();

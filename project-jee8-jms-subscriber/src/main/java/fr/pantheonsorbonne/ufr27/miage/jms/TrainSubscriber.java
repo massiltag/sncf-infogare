@@ -6,6 +6,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.jaxb.InfoTypeEnum;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.jms.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -25,7 +26,7 @@ public class TrainSubscriber implements Closeable {
     @Inject
 //    @Named("BordeauxTopic")
 //    @Named("ParisTopic")
-//    @Named("AmiensTopic")
+    @Named("AmiensTopic")
 //    @Named("LilleTopic")
 //    @Named("LyonTopic")
     private Topic topic;
@@ -94,7 +95,7 @@ public class TrainSubscriber implements Closeable {
                     printColor(dto.getTrainName(), ANSI_RED),
                     dto.getTrainType().equals("TGV")
                             ? printColor(dto.getTrainType(), ANSI_PURPLE) : printColor(dto.getTrainType(), ANSI_YELLOW),
-                    (dto.getTimestamp() == null) ? "Train sans arrêt" : dto.getTimestamp()
+                    (dto.getTimestamp().equals("null")) ? "Train sans arrêt" : dto.getTimestamp()
             );
             System.out.println();
         });

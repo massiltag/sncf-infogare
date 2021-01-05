@@ -1,31 +1,12 @@
 package fr.pantheonsorbonne.ufr27.miage;
 
-import java.net.URI;
-import java.util.List;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status.Family;
-
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Address;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ccinfo;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.FreeTrialPlan;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Invoice;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.InvoiceWrapper;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ObjectFactory;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.User;
-
 /**
  * Hello world!
  *
  */
-public class RestClientApp
+public class RestClientApp {
 
-{
+	/*
 
 	private static FreeTrialPlan getPlan() {
 		ObjectFactory factory = new ObjectFactory();
@@ -154,4 +135,6 @@ public class RestClientApp
 		}
 
 	}
+
+	*/
 }
