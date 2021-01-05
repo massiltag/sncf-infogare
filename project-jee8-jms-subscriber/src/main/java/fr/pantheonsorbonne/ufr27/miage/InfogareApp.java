@@ -10,7 +10,7 @@ import javax.jms.JMSException;
  * Hello world!
  *
  */
-public class PaymentValidatorApp {
+public class InfogareApp {
 	public static void main(String[] args) throws InterruptedException, JMSException {
 		// initialize CDI 2.0 SE container
 		SeContainerInitializer initializer = SeContainerInitializer.newInstance();
