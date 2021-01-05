@@ -20,11 +20,12 @@ public class StringUtil {
         return color + out + ANSI_RESET;
     }
 
-    public static void clearConsoleAndPrintName(Topic topic) {
+    public static void clearConsoleAndPrintName(Topic topic, String type) {
         try {
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
                     printColor("======= SNCF INFOGARE : ", ANSI_BLUE) +
                     printColor(topic.getTopicName().replaceAll("Topic", ""), ANSI_RED) +
+                    printColor(" [" + type + "]", ANSI_CYAN) +
                     printColor(" =======", ANSI_BLUE));
         } catch (JMSException e) {}
     }

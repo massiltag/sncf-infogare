@@ -24,14 +24,14 @@ public class TrainSubscriber implements Closeable {
 
     // BUSINESS
     @Inject
-//    @Named("BordeauxTopic")
+    @Named("BordeauxTopic")
 //    @Named("ParisTopic")
-    @Named("AmiensTopic")
+//    @Named("AmiensTopic")
 //    @Named("LilleTopic")
 //    @Named("LyonTopic")
     private Topic topic;
 
-    private static final String infoGareType = InfoTypeEnum.ARRIVAL.value();
+    private static final String infoGareType = InfoTypeEnum.ALL.value();
 
     private Map<Integer, InfoDTO> data = new HashMap<>();
 
@@ -52,7 +52,7 @@ public class TrainSubscriber implements Closeable {
             connection.setClientID("Train subscriber " + UUID.randomUUID());
             connection.start();
             session = connection.createSession();
-            clearConsoleAndPrintName(topic);
+            clearConsoleAndPrintName(topic, infoGareType);
             messageConsumer = session.createDurableSubscriber(topic, "train-topic");
         } catch (JMSException e) {
             throw new RuntimeException(e);
@@ -66,7 +66,7 @@ public class TrainSubscriber implements Closeable {
             JAXBContext jaxbContext = JAXBContext.newInstance(InfoDTO.class);
             InfoDTO infoDTO = (InfoDTO) jaxbContext.createUnmarshaller().unmarshal(new StringReader(message.getText()));
 
-            clearConsoleAndPrintName(topic);
+            clearConsoleAndPrintName(topic, infoGareType);
             handle(infoDTO);
         } catch (JMSException | JAXBException e) {
             System.out.println("failed to consume message");
@@ -75,6 +75,10 @@ public class TrainSubscriber implements Closeable {
 
     public void handle(InfoDTO infoDTO) {
         System.out.println(printColor("Received Trains Info\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯", ANSI_CYAN));
+
+        // Filtre : ne prend en compte que le type qu'on a défini à l'infogare
+        if (!infoGareType.equals(InfoTypeEnum.ALL.value()) && !infoDTO.getInfoType().equals(infoGareType))
+            return;
 
         // Si on a l'info du train, l'enlever
         if (this.data.containsKey(infoDTO.getTrainId()))
@@ -119,7 +123,7 @@ public class TrainSubscriber implements Closeable {
     public String consumeStr() {
         try {
             Message message = messageConsumer.receive();
-            clearConsoleAndPrintName(topic);
+            clearConsoleAndPrintName(topic, infoGareType);
             System.out.println(((TextMessage) message).getText());
             return ((TextMessage) message).getText();
         } catch (JMSException e) {

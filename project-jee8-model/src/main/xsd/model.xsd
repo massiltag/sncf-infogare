@@ -73,7 +73,39 @@
 		</xsd:complexType>
 	</xsd:element>
 
+	<xsd:simpleType name="EnumConditions">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Pluie"/>
+			<xsd:enumeration value="AccidentHumain"/>
+			<xsd:enumeration value="PanneElec"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="root">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="local" type="EnumConditions"/>
+				<xsd:element name="ref" type="EnumConditions"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
 
+	<xsd:simpleType name="InfoTypeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Departure"/>
+			<xsd:enumeration value="Arrival"/>
+			<xsd:enumeration value="Transit"/>
+			<xsd:enumeration value="Disruption"/>
+			<xsd:enumeration value="All"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="root2">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="local" type="InfoTypeEnum"/>
+				<xsd:element name="ref" type="InfoTypeEnum"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
 
 
 	<!--xsd:element name="arrivalsWrapper">
@@ -186,38 +218,5 @@
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element-->
-
-	<xsd:simpleType name="EnumConditions">
-		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="Pluie"/>
-			<xsd:enumeration value="AccidentHumain"/>
-			<xsd:enumeration value="PanneElec"/>
-		</xsd:restriction>
-	</xsd:simpleType>
-	<xsd:element name="root">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="local" type="EnumConditions"/>
-				<xsd:element name="ref" type="EnumConditions"/>
-			</xsd:sequence>
-		</xsd:complexType>
-	</xsd:element>
-
-	<xsd:simpleType name="InfoTypeEnum">
-		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="Departure"/>
-			<xsd:enumeration value="Arrival"/>
-			<xsd:enumeration value="Transit"/>
-			<xsd:enumeration value="Disruption"/>
-		</xsd:restriction>
-	</xsd:simpleType>
-	<xsd:element name="root2">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="local" type="InfoTypeEnum"/>
-				<xsd:element name="ref" type="InfoTypeEnum"/>
-			</xsd:sequence>
-		</xsd:complexType>
-	</xsd:element>
 
 </xsd:schema>
