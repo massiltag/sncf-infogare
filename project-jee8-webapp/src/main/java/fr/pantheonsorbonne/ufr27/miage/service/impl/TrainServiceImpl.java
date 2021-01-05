@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
+import fr.pantheonsorbonne.ufr27.miage.dao.DesserteReelleDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
@@ -27,8 +28,11 @@ import static fr.pantheonsorbonne.ufr27.miage.util.TimeUtil.calculateIfDelay;
 @Slf4j
 public class TrainServiceImpl implements TrainService {
 
-    @Inject
-    TrajetDAO trajetDAO;
+	@Inject
+	TrajetDAO trajetDAO;
+
+	@Inject
+	DesserteReelleDAO desserteReelleDAO;
 
     @Inject
 	RuptureService ruptureService;
@@ -98,12 +102,13 @@ public class TrainServiceImpl implements TrainService {
 			ruptureService.processRuptureCorrespondance(trajet);
 		}
 
-		// Envoyer les informations aux infogares concernés
-		sendGareStates(trajet);
+		// Mettre à jour les infogares // sendGareStates(trajet);
+		updateInfogares();
+
     }
 
     public void sendGareStates(Trajet trajet) {
-    	List<DesserteReelle> dessertes = trajet.getDesserteReelles();
+    	List<DesserteReelle> dessertes = desserteReelleDAO.getAllOfTrajet(trajet.getId());
 
 		// Itérer sur les gares
     	for (DesserteReelle desserteReelle : dessertes) {
@@ -137,7 +142,7 @@ public class TrainServiceImpl implements TrainService {
 	 *     Appelée au lancement de l'application, sert à envoyer les informations initiales aux infogares.
 	 * </p>
 	 */
-	public void init() {
+	public void updateInfogares() {
 		for (Trajet t : trajetDAO.findAll())
 			sendGareStates(t);
 	}

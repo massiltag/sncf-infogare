@@ -2,91 +2,6 @@
 			xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
 
 
-	<xsd:element name="user" type="user"/>
-	<xsd:element name="address" type="address"/>
-	<xsd:element name="ccinfo" type="ccinfo"/>
-	<xsd:element name="invoice" type="invoice"/>
-	<xsd:element name="invoiceWrapper" type="invoiceWrapper"/>
-
-
-
-
-	<xsd:complexType name="user">
-		<xsd:sequence>
-			<xsd:element name="id" type="xsd:int"/>
-			<xsd:element name="fname" type="xsd:string"/>
-			<xsd:element name="lname" type="xsd:string"/>
-			<xsd:element name="membershipId" type="xsd:int"
-						 minOccurs="0"/>
-		</xsd:sequence>
-	</xsd:complexType>
-
-
-	<xsd:complexType name="user2">
-		<xsd:sequence>
-			<xsd:element name="id" type="xsd:int"/>
-			<xsd:element name="fname" type="xsd:string"/>
-			<xsd:element name="lname" type="xsd:string"/>
-			<xsd:element name="membershipId" type="xsd:int"
-						 minOccurs="0"/>
-		</xsd:sequence>
-	</xsd:complexType>
-
-
-
-	<xsd:complexType name="address">
-		<xsd:sequence>
-			<xsd:element name="streetName" type="xsd:string"/>
-			<xsd:element name="streetNumber" type="xsd:int"/>
-			<xsd:element name="zipCode" type="xsd:string"/>
-			<xsd:element name="Country" type="xsd:string"/>
-		</xsd:sequence>
-
-	</xsd:complexType>
-
-
-
-
-	<xsd:element name="freeTrialPlan">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="user" type="user"/>
-				<xsd:element name="address" type="address"/>
-			</xsd:sequence>
-
-		</xsd:complexType>
-
-
-	</xsd:element>
-
-	<xsd:complexType name="ccinfo">
-		<xsd:sequence>
-			<xsd:element name="number" type="xsd:string" />
-			<xsd:element name="validityDate" type="xsd:string" />
-			<xsd:element name="ccv" type="xsd:int" />
-		</xsd:sequence>
-	</xsd:complexType>
-
-
-	<xsd:complexType name="invoiceWrapper">
-		<xsd:sequence>
-			<xsd:element name="invoices" type="invoice"
-						 maxOccurs="unbounded"/>
-		</xsd:sequence>
-
-	</xsd:complexType>
-	<xsd:complexType name="invoice">
-		<xsd:sequence>
-
-			<xsd:element name="date" type="SimpleDate">
-			</xsd:element>
-			<xsd:element name="contractId" type="xsd:int"/>
-			<xsd:element name="paid" type="xsd:boolean"/>
-		</xsd:sequence>
-
-	</xsd:complexType>
-
-
 	<!-- Our XSD starts here -->
 	<xsd:element name="trajet" type="trajet"/>
 	<xsd:element name="gare" type="gare"/>
@@ -158,7 +73,39 @@
 		</xsd:complexType>
 	</xsd:element>
 
+	<xsd:simpleType name="EnumConditions">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Pluie"/>
+			<xsd:enumeration value="AccidentHumain"/>
+			<xsd:enumeration value="PanneElec"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="root">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="local" type="EnumConditions"/>
+				<xsd:element name="ref" type="EnumConditions"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
 
+	<xsd:simpleType name="InfoTypeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Departure"/>
+			<xsd:enumeration value="Arrival"/>
+			<xsd:enumeration value="Transit"/>
+			<xsd:enumeration value="Disruption"/>
+			<xsd:enumeration value="All"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="root2">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="local" type="InfoTypeEnum"/>
+				<xsd:element name="ref" type="InfoTypeEnum"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
 
 
 	<!--xsd:element name="arrivalsWrapper">
@@ -271,38 +218,5 @@
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element-->
-
-	<xsd:simpleType name="EnumConditions">
-		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="Pluie"/>
-			<xsd:enumeration value="AccidentHumain"/>
-			<xsd:enumeration value="PanneElec"/>
-		</xsd:restriction>
-	</xsd:simpleType>
-	<xsd:element name="root">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="local" type="EnumConditions"/>
-				<xsd:element name="ref" type="EnumConditions"/>
-			</xsd:sequence>
-		</xsd:complexType>
-	</xsd:element>
-
-	<xsd:simpleType name="InfoTypeEnum">
-		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="Departure"/>
-			<xsd:enumeration value="Arrival"/>
-			<xsd:enumeration value="Transit"/>
-			<xsd:enumeration value="Disruption"/>
-		</xsd:restriction>
-	</xsd:simpleType>
-	<xsd:element name="root2">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="local" type="InfoTypeEnum"/>
-				<xsd:element name="ref" type="InfoTypeEnum"/>
-			</xsd:sequence>
-		</xsd:complexType>
-	</xsd:element>
 
 </xsd:schema>

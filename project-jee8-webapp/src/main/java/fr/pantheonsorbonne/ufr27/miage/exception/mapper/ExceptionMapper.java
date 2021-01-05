@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.ufr27.miage.exception;
+package fr.pantheonsorbonne.ufr27.miage.exception.mapper;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;

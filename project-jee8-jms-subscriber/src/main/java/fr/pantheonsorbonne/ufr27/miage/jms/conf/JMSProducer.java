@@ -5,7 +5,6 @@ import org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
 import javax.jms.Topic;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -27,8 +26,6 @@ public class JMSProducer {
 		Hashtable<String, String> jndiBindings = new Hashtable<>();
 		jndiBindings.put(Context.INITIAL_CONTEXT_FACTORY, ActiveMQInitialContextFactory.class.getName());
 		jndiBindings.put("connectionFactory.ConnectionFactory", "tcp://localhost:61616");
-		jndiBindings.put("queue.PaymentQueue", "PaymentQueue");
-		jndiBindings.put("queue.PaymentAckQueue", "PaymentAckQueue");
 
 		// SNCF
 		jndiBindings.put("topic.ParisTopic", "ParisTopic");
@@ -48,18 +45,6 @@ public class JMSProducer {
 		} finally {
 			JNDI_CONTEXT = c;
 		}
-	}
-
-	@Produces
-	@Named("PaymentQueue")
-	public Queue getPaymentQueue() throws NamingException {
-		return (Queue) JNDI_CONTEXT.lookup("PaymentQueue");
-	}
-
-	@Produces
-	@Named("PaymentAckQueue")
-	public Queue getPaymentAckQueue() throws NamingException {
-		return (Queue) JNDI_CONTEXT.lookup("PaymentAckQueue");
 	}
 
 	@Produces
