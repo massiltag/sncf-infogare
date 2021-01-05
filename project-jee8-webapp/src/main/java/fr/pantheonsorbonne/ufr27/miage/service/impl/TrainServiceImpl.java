@@ -112,7 +112,7 @@ public class TrainServiceImpl implements TrainService {
 					.trainId(trajet.getId())
 					.trainName(trajet.getName())
 					.trainType(trajet.getType())
-					.timestamp(desserteReelle.getArrivee().toString())
+					.timestamp(String.valueOf(desserteReelle.getArrivee()))
 					.build();
 
     		// Première gare, envoyer un DTO JAXB Départ

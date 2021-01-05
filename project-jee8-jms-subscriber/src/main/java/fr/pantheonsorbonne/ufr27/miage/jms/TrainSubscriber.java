@@ -24,11 +24,11 @@ public class TrainSubscriber implements Closeable {
 
     // BUSINESS
     @Inject
-    @Named("BordeauxTopic")
+//    @Named("BordeauxTopic")
 //    @Named("ParisTopic")
 //    @Named("AmiensTopic")
 //    @Named("LilleTopic")
-//    @Named("LyonTopic")
+    @Named("LyonTopic")
     private Topic topic;
 
     private static final String infoGareType = InfoTypeEnum.ARRIVAL.value();
@@ -95,7 +95,7 @@ public class TrainSubscriber implements Closeable {
                     printColor(dto.getTrainName(), ANSI_RED),
                     dto.getTrainType().equals("TGV")
                             ? printColor(dto.getTrainType(), ANSI_PURPLE) : printColor(dto.getTrainType(), ANSI_YELLOW),
-                    dto.getTimestamp()
+                    (dto.getTimestamp() == null) ? "Train sans arrêt" : dto.getTimestamp()
             );
             System.out.println();
         });
