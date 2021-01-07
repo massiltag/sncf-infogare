@@ -1,22 +1,22 @@
 package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class TrainServiceImplTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void processLiveInfo() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void sendGareStates() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void updateInfogares() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void processDelayWithCondition() {
     }
 }
