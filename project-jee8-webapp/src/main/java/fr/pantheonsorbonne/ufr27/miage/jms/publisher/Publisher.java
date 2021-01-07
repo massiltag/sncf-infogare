@@ -8,6 +8,12 @@ import java.io.StringWriter;
 
 public interface Publisher {
 
+    /**
+     * <p>
+     *     Marshal le DTO en XML et l'envoie sur le Topic.
+     * </p>
+     * @param infoDTO
+     */
     default void publish(InfoDTO infoDTO) {
         try {
             StringWriter writer = new StringWriter();
@@ -20,6 +26,13 @@ public interface Publisher {
         }
     }
 
+    /**
+     * <p>
+     *     Publie un message au format texte.
+     * </p>
+     * @param message   Chaîne de caractères à envoyer
+     * @return  Le message envoyé
+     */
     String publish(String message);
 
 }
