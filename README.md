@@ -152,7 +152,8 @@ only one information about a given train at a time.
 
 ---
 # Modeled scenario :
-![scenario](./files/img/scenario.png)
+![scenario](./files/img/scenario.png)  
+BDX = "Bordeaux Saint-Jean"; PAR = "Paris Montparnasse"; AMS = "Gare d'Amiens"; LIL = "Lille Flandres"; LYN = "Lyon Perrache".
 
 ---
 # How to launch
