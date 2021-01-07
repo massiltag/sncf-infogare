@@ -26,22 +26,23 @@ between the Trains and the Infocentre, and between the Infocentre and the Infoga
 DTOs :
 
 - `LiveInfo` :
-Is used by the train to transmit live information to the Infocenter. Containing :
-  - `lastGareIndex`: Sequential index of the last station traveled by the train.
-  - `nextGareIndex`: Sequential index of the station where the train is going.
-  - `percentage`: Percentage of distance traveled between stations `lastGareIndex` and `nextGareIndex`.
-  - `timestamp` : Time and date the LiveInfo is sent.
+Is used by the train to transmit live information to the Infocenter.  
+  Containing :
+    - `lastGareIndex`: Sequential index of the last station traveled by the train.
+    - `nextGareIndex`: Sequential index of the station where the train is going.
+    - `percentage`: Percentage of distance traveled between stations `lastGareIndex` and `nextGareIndex`.
+    - `timestamp` : Time and date the LiveInfo is sent.
     
     
 - `InfoDTO` :
 Is used by the Infocenter to transmit train informations to Infogares according to their JMS topic subscriptions. 
 Containing :
-  - `infoType` : Type of the information sent by the Infocenter (see `InfoTypeEnum`).
-  - `trainId` : ID of the train concerned by the DTO.
-  - `trainName` : Name of the train concerned by the DTO.
-  - `trainName` : Type of the train concerned by the DTO.
-  - `timestamp` : Time the train arrives at this station.
-  - In case of disruption, the field `disruptionType` is also filled (see `EnumConditions`).
+    - `infoType` : Type of the information sent by the Infocenter (see `InfoTypeEnum`).
+    - `trainId` : ID of the train concerned by the DTO.
+    - `trainName` : Name of the train concerned by the DTO.
+    - `trainName` : Type of the train concerned by the DTO.
+    - `timestamp` : Time the train arrives at this station.
+    - In case of disruption, the field `disruptionType` is also filled (see `EnumConditions`).
     
 Enums :
 
@@ -163,9 +164,9 @@ only one information about a given train at a time.
     to display by changing the value of `infoGareType` in `TrainSubscriber`.
   - Import `files/postman.json` in Postman
   - Run requests in this order :
-    - `1 - PopulateDB` to populate database with the modeled scenario data.
-    - `2 - Init` to send first data to the Infogares, you can now check train states in the `jms-subscriber` consoles.
-    - `3 - LiveInfo` to send live info, you can now check the changes in the Infogare screens.
+      - `1 - PopulateDB` to populate database with the modeled scenario data.
+      - `2 - Init` to send first data to the Infogares, you can now check train states in the `jms-subscriber` consoles.
+      - `3 - LiveInfo` to send live info, you can now check the changes in the Infogare screens.
 
 
 ---
