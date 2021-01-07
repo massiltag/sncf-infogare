@@ -172,24 +172,27 @@ only one information about a given train at a time.
 ---
 # Useful SQL
   
-  These are a few SQL statements to paste in the H2 database to have a better visibility on what happens.
-  - View the current route of a train
-  ```sql
-  SELECT DESSERTEREELLE.*, NOM AS NOM_GARE, TYPE
-  FROM DESSERTEREELLE, GARE, TRAJET 
-  WHERE TRAJET_ID=1 
-    AND DESSERTEREELLE.GARE_ID=GARE.ID
-    AND DESSERTEREELLE.TRAJET_ID=TRAJET.ID
-  ORDER BY SEQ
-  ```
-  - View connection breaks
-  ```sql
-  SELECT GARE.NOM AS NOM_GARE, PASSAGER_ID, PASSAGER.TRAJET_ID, RUPTURE, NEWDATE
-  FROM CORRESPONDANCE, TRAJET, PASSAGER, GARE
-  WHERE CORRESPONDANCE.TRAJET_ID=TRAJET.ID
-    AND PASSAGER.CORRESPONDANCE_ID=CORRESPONDANCE.ID
-    AND CORRESPONDANCE.GARE_ID=GARE.ID
-  ```
+These are a few SQL statements to paste in the H2 database to have a better visibility on what happens.  
+
+- View the current route of a train  
+```sql
+        SELECT DESSERTEREELLE.*, NOM AS NOM_GARE, TYPE
+        FROM DESSERTEREELLE, GARE, TRAJET 
+        WHERE TRAJET_ID=1 
+          AND DESSERTEREELLE.GARE_ID=GARE.ID
+          AND DESSERTEREELLE.TRAJET_ID=TRAJET.ID
+        ORDER BY SEQ
+```  
+
+- View the current route of a train  
+```sql
+        SELECT GARE.NOM AS NOM_GARE, PASSAGER_ID, PASSAGER.TRAJET_ID, RUPTURE, NEWDATE
+        FROM CORRESPONDANCE, TRAJET, PASSAGER, GARE
+        WHERE CORRESPONDANCE.TRAJET_ID=TRAJET.ID
+          AND PASSAGER.CORRESPONDANCE_ID=CORRESPONDANCE.ID
+          AND CORRESPONDANCE.GARE_ID=GARE.ID
+```  
+
 
 # Contribution
 - **[Massil TAGUEMOUT](mailto:massiltag@icloud.com)**
