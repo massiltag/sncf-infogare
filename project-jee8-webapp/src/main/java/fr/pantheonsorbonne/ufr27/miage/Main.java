@@ -4,12 +4,11 @@ import fr.pantheonsorbonne.ufr27.miage.conf.EMFFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
 import fr.pantheonsorbonne.ufr27.miage.dao.*;
-import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
-import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
+import fr.pantheonsorbonne.ufr27.miage.exception.mapper.ExceptionMapper;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.JMSProducer;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentAckQueueSupplier;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentQueueSupplier;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.supplier.*;
+import fr.pantheonsorbonne.ufr27.miage.jms.publisher.*;
 import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
 import fr.pantheonsorbonne.ufr27.miage.service.*;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.*;
@@ -23,7 +22,7 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import javax.inject.Singleton;
 import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
+import javax.jms.Topic;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
@@ -49,24 +48,10 @@ public class Main {
 					@Override
 					protected void configure() {
 
-						bind(GymServiceImpl.class).to(GymService.class);
-
-						bind(PaymentServiceImpl.class).to(PaymentService.class);
-						bind(InvoicingServiceImpl.class).to(InvoicingService.class);
-						bind(InvoiceDAO.class).to(InvoiceDAO.class);
-						bind(UserServiceImpl.class).to(UserService.class);
-						bind(MailingServiceImpl.class).to(MailingService.class);
-						bind(PaymentDAO.class).to(PaymentDAO.class);
+						// JPA, JMS
 						bindFactory(EMFFactory.class).to(EntityManagerFactory.class).in(Singleton.class);
 						bindFactory(EMFactory.class).to(EntityManager.class).in(RequestScoped.class);
 						bindFactory(ConnectionFactorySupplier.class).to(ConnectionFactory.class).in(Singleton.class);
-						bindFactory(PaymentAckQueueSupplier.class).to(Queue.class).named("PaymentAckQueue")
-								.in(Singleton.class);
-						bindFactory(PaymentQueueSupplier.class).to(Queue.class).named("PaymentQueue")
-								.in(Singleton.class);
-
-						bind(PaymentValidationAckownledgerBean.class).to(PaymentValidationAckownledgerBean.class)
-								.in(Singleton.class);
 
 						// SNCF
 						bind(TrainServiceImpl.class).to(TrainService.class);
@@ -78,6 +63,21 @@ public class Main {
 						bind(GareDAO.class).to(GareDAO.class);
 						bind(PassagerDAO.class).to(PassagerDAO.class);
 						bind(CorrespondanceDAO.class).to(CorrespondanceDAO.class);
+						bind(InfogareSenderServiceImpl.class).to(InfogareSenderService.class);
+
+						// Topics
+						bindFactory(ParisTopicSupplier.class).to(Topic.class).named("ParisTopic").in(Singleton.class);
+						bindFactory(BordeauxTopicSupplier.class).to(Topic.class).named("BordeauxTopic").in(Singleton.class);
+						bindFactory(AmiensTopicSupplier.class).to(Topic.class).named("AmiensTopic").in(Singleton.class);
+						bindFactory(LilleTopicSupplier.class).to(Topic.class).named("LilleTopic").in(Singleton.class);
+						bindFactory(LyonTopicSupplier.class).to(Topic.class).named("LyonTopic").in(Singleton.class);
+
+						// Publishers
+						bind(ParisPublisher.class).to(ParisPublisher.class).in(Singleton.class);
+						bind(BordeauxPublisher.class).to(BordeauxPublisher.class).in(Singleton.class);
+						bind(AmiensPublisher.class).to(AmiensPublisher.class).in(Singleton.class);
+						bind(LillePublisher.class).to(LillePublisher.class).in(Singleton.class);
+						bind(LyonPublisher.class).to(LyonPublisher.class).in(Singleton.class);
 
 					}
 
@@ -108,8 +108,6 @@ public class Main {
 		System.out.println(String.format(
 				"Jersey app started with WADL available at " + "%sapplication.wadl\nHit enter to stop it...",
 				BASE_URI));
-		System.in.read();
-		server.stop();
 
 	}
 }

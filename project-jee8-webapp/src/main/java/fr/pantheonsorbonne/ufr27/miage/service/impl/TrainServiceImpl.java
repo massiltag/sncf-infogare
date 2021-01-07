@@ -1,14 +1,13 @@
 package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
+import fr.pantheonsorbonne.ufr27.miage.dao.DesserteReelleDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.InfoDTO;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.InfoTypeEnum;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.LiveInfo;
-import fr.pantheonsorbonne.ufr27.miage.service.RuptureService;
-import fr.pantheonsorbonne.ufr27.miage.service.StopService;
-import fr.pantheonsorbonne.ufr27.miage.service.TERService;
-import fr.pantheonsorbonne.ufr27.miage.service.TrainService;
+import fr.pantheonsorbonne.ufr27.miage.service.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.ManagedBean;
@@ -28,8 +27,11 @@ import static fr.pantheonsorbonne.ufr27.miage.util.TimeUtil.calculateIfDelay;
 @Slf4j
 public class TrainServiceImpl implements TrainService {
 
-    @Inject
-    TrajetDAO trajetDAO;
+	@Inject
+	TrajetDAO trajetDAO;
+
+	@Inject
+	DesserteReelleDAO desserteReelleDAO;
 
     @Inject
 	RuptureService ruptureService;
@@ -39,6 +41,9 @@ public class TrainServiceImpl implements TrainService {
 
     @Inject
 	TERService terService;
+
+    @Inject
+	InfogareSenderService infogareSenderService;
 
 	/**
 	 * Méthode principale, déclenchée à la réception des informations en direct depuis le train ({@link LiveInfo})
@@ -96,7 +101,50 @@ public class TrainServiceImpl implements TrainService {
 			ruptureService.processRuptureCorrespondance(trajet);
 		}
 
+		// Mettre à jour les infogares // sendGareStates(trajet);
+		updateInfogares();
+
     }
+
+    public void sendGareStates(Trajet trajet) {
+    	List<DesserteReelle> dessertes = desserteReelleDAO.getAllOfTrajet(trajet.getId());
+
+		// Itérer sur les gares
+    	for (DesserteReelle desserteReelle : dessertes) {
+    		// Construire l'information
+    		InfoDTO infoDTO = InfoDTO.builder()
+					.trainId(trajet.getId())
+					.trainName(trajet.getName())
+					.trainType(trajet.getType())
+					.timestamp(String.valueOf(desserteReelle.getArrivee()))
+					.build();
+
+    		// Première gare, envoyer un DTO JAXB Départ
+			if (desserteReelle.getSeq() == 1)
+				infoDTO.setInfoType(InfoTypeEnum.DEPARTURE.value());
+			else
+			// Dernière gare, envoyer un DTO JAXB Arrivée
+			if (desserteReelle.getSeq() == dessertes.size())
+				infoDTO.setInfoType(InfoTypeEnum.ARRIVAL.value());
+			else
+			// Gare intermédiaire, envoyer un DTO JAXB Passage
+				infoDTO.setInfoType(InfoTypeEnum.TRANSIT.value());
+
+			// Envoyer l'information
+			infogareSenderService.send(desserteReelle.getGare().getCode(), infoDTO);
+		}
+
+	}
+
+	/**
+	 * <p>
+	 *     Appelée au lancement de l'application, sert à envoyer les informations initiales aux infogares.
+	 * </p>
+	 */
+	public void updateInfogares() {
+		for (Trajet t : trajetDAO.findAll())
+			sendGareStates(t);
+	}
 
 
 	/*
@@ -152,39 +200,6 @@ public class TrainServiceImpl implements TrainService {
 				trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
 			}
 		}
-	}
-
-	/*
-	 * METHODES CI-DESSOUS NE SERONT PAS UTILISER DANS NOTRE CAS
-	 */
-	@Override
-	public void processCancel(int id, String conditions) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Trajet processGetTrain(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Trajet> processGetTrainList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Trajet> processGetTrainArriveeGareList(Gare gare) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Trajet> processGetTrainDepartGareList(Gare gare) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 
