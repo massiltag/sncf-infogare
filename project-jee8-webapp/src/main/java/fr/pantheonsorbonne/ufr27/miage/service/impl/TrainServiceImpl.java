@@ -200,7 +200,39 @@ public class TrainServiceImpl implements TrainService {
 				trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
 			}
 		}
+		
+		sendGareStatesDelay(trajet);
 	}
+	
+	public void sendGareStatesDelay(Trajet trajet) {
+    	List<DesserteReelle> dessertes = desserteReelleDAO.getAllOfTrajet(trajet.getId());
 
-
+		// Itérer sur les gares
+    	for (DesserteReelle desserteReelle : dessertes) {
+    		// Construire l'information
+    		InfoDTO infoDTO = InfoDTO.builder()
+					.trainId(trajet.getId())
+					.trainName(trajet.getName())
+					.trainType(trajet.getType())
+					.timestamp(String.valueOf(desserteReelle.getArrivee()))
+					.build();
+    		
+    		// Pour toutes les dessertes reelles de ce trajet, affiche DISRUPTION sur l'infogare 
+		    		if (desserteReelle.getTrajet().getId() == trajet.getId())
+						infoDTO.setInfoType(InfoTypeEnum.DISRUPTION.value());
+		    		else		
+		    		if (desserteReelle.getSeq() == 1)
+						infoDTO.setInfoType(InfoTypeEnum.DEPARTURE.value());
+					else
+					// Dernière gare, envoyer un DTO JAXB Arrivée
+					if (desserteReelle.getSeq() == dessertes.size())
+						infoDTO.setInfoType(InfoTypeEnum.ARRIVAL.value());
+					else
+					// Gare intermédiaire, envoyer un DTO JAXB Passage
+						infoDTO.setInfoType(InfoTypeEnum.TRANSIT.value());
+		    		
+			// Envoyer l'information			
+			infogareSenderService.send(desserteReelle.getGare().getCode(), infoDTO);
+		}
+	}
 }
