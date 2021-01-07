@@ -3,8 +3,6 @@
 
 
 	<!-- Our XSD starts here -->
-	<xsd:element name="trajet" type="trajet"/>
-	<xsd:element name="gare" type="gare"/>
 	<xsd:element name="liveInfo" type="liveInfo"/>
 
 	<!-- Useful -->
