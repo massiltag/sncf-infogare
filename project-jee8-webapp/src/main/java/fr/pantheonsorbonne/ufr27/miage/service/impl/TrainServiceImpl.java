@@ -3,7 +3,6 @@ package fr.pantheonsorbonne.ufr27.miage.service.impl;
 import fr.pantheonsorbonne.ufr27.miage.dao.DesserteReelleDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.TrajetDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.DesserteReelle;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Trajet;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.InfoDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.InfoTypeEnum;
@@ -201,39 +200,6 @@ public class TrainServiceImpl implements TrainService {
 				trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
 			}
 		}
-	}
-
-	/*
-	 * METHODES CI-DESSOUS NE SERONT PAS UTILISER DANS NOTRE CAS
-	 */
-	@Override
-	public void processCancel(int id, String conditions) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Trajet processGetTrain(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Trajet> processGetTrainList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Trajet> processGetTrainArriveeGareList(Gare gare) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Trajet> processGetTrainDepartGareList(Gare gare) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 
