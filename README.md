@@ -104,7 +104,7 @@ certain circumstances.
 
 
 - `InfogareSenderService` :
-  Is responsible of sending the `InfoDTO` to the Infogares, uses the right JMS Publisher according to the `gareId` field .
+  Is responsible of sending the `InfoDTO` to the Infogares, uses the right JMS Publisher according to the `gareId` field.
   JMSPublishers are classes which handle the JAXB Marshalling of the DTO and send it to the topic injected in them.
   
 ### Persistence layer
@@ -206,3 +206,5 @@ WHERE CORRESPONDANCE.TRAJET_ID=TRAJET.ID
 
 M1 MIAGE APP  
 Université Paris I Panthéon Sorbonne
+
+Repository link : https://bitbucket.org/maxtag/sncf-infogare  
