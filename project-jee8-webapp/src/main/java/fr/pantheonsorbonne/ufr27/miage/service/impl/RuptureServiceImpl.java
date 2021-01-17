@@ -27,6 +27,7 @@ import static fr.pantheonsorbonne.ufr27.miage.util.DateUtil.localDateTimeToDate;
 @Slf4j
 public class RuptureServiceImpl implements RuptureService {
 
+    // Set to 5 for testing, else 50
     private static int TOLERATED_NB_RUPTURES = 5;
 
     @Inject

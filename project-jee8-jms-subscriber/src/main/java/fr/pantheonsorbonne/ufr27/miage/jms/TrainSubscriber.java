@@ -6,7 +6,6 @@ import fr.pantheonsorbonne.ufr27.miage.model.jaxb.InfoTypeEnum;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.jms.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -24,7 +23,7 @@ public class TrainSubscriber implements Closeable {
 
     // BUSINESS
     @Inject
-    @Named("BordeauxTopic")
+//    @Named("BordeauxTopic")
 //    @Named("ParisTopic")
 //    @Named("AmiensTopic")
 //    @Named("LilleTopic")
@@ -93,9 +92,11 @@ public class TrainSubscriber implements Closeable {
         System.out.println("==========================================================");
         System.out.print(ANSI_RESET);
         this.data.forEach((id, dto) -> {
+            String infoType = dto.getInfoType();
             System.out.printf("%7s %15s %40s %26s %41s",
                     printColor(String.valueOf(dto.getTrainId()), ANSI_CYAN),
-                    dto.getInfoType(),
+                    (infoType.equals(InfoTypeEnum.DISRUPTION.value()))
+                            ? dto.getDisruptionType() : infoType,
                     printColor(dto.getTrainName(), ANSI_RED),
                     dto.getTrainType().equals("TGV")
                             ? printColor(dto.getTrainType(), ANSI_PURPLE) : printColor(dto.getTrainType(), ANSI_YELLOW),

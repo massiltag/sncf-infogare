@@ -39,7 +39,7 @@
 				<xsd:element name="trainType" type="xsd:string"/>
 				<xsd:element name="timestamp" type="xsd:string"/>
 				<!-- in case of disruption -->
-				<xsd:element name="disruptionType" type="EnumConditions"/>
+				<xsd:element name="disruptionType" type="xsd:string"/>
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
