@@ -12,8 +12,7 @@ to make sure that we can handle Data smoothly.
 # Project structure
 
 The goal of the project is to model an application in order to respond to the problem of the Infocentre / Infogares
-within the SNCF train company, we implemented a business logic corresponding to the information 
-given in the specifications, and made the components communicate as required.
+within the SNCF train company, we implemented business logic corresponding to given specifications, and made the components communicate as required.
 This section details our conception choices.  
 `project-jee8` is the parent project.
 
@@ -142,13 +141,16 @@ This project consumes `InfoDTO` produced by the Infocenter. Has a TrainSubscrube
 Unmarshalling the DTO, filtering and printing it as a formatted output.  
 The JMSProducer provides the topic instance to be injected into the subscriber.  
 The data is kept in a HashMap (`Map<Integer, InfoDTO>`) of key `trainId`, which ensures us that we have 
-only one information about a given train at a time.
+only one information about a given train at a time.  
+Preview :  
+![infogare](./files/img/infogare.png)  
 
 
 ## The Train : `project-jee8-rest-client`
 
   This project is supposed to call Infogare REST API using Jersey Client for JAXRS.
   But we gave the teacher a Postman collection for him to test our project.
+
 
 ---
 # Modeled scenario :
@@ -160,7 +162,7 @@ BDX = "Bordeaux Saint-Jean"; PAR = "Paris Montparnasse"; AMS = "Gare d'Amiens"; 
 
   - `mvn clean install` in root
   - Run `Main.main()` in `project-jee8-webapp`
-  - Run `Main.main()` in `project-jee8-jms-subscriber` five times, each time by uncommenting 
+  - Run `InfoGareApp.main()` in `project-jee8-jms-subscriber` five times, each time by uncommenting 
     one topic injection in `jms/TrainSubscriber` (starting from line 27), you can also choose which information
     to display by changing the value of `infoGareType` in `TrainSubscriber`.
   - Import `files/postman.json` in Postman
@@ -175,7 +177,7 @@ BDX = "Bordeaux Saint-Jean"; PAR = "Paris Montparnasse"; AMS = "Gare d'Amiens"; 
   
 These are a few SQL statements to paste in the H2 database to have a better visibility on what happens.  
 
-- View the current route of a train  
+- View the current route of a train (replace `TRAJET_ID` value)  
 ```sql
 SELECT DESSERTEREELLE.*, NOM AS NOM_GARE, TYPE
 FROM DESSERTEREELLE, GARE, TRAJET 
@@ -185,7 +187,7 @@ WHERE TRAJET_ID=1
 ORDER BY SEQ
 ```  
 
-- View the current route of a train  
+- View Correspondance states  
 ```sql
 SELECT GARE.NOM AS NOM_GARE, PASSAGER_ID, PASSAGER.TRAJET_ID, RUPTURE, NEWDATE
 FROM CORRESPONDANCE, TRAJET, PASSAGER, GARE
