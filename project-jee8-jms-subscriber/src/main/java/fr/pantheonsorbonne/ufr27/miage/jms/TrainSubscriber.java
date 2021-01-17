@@ -6,6 +6,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.jaxb.InfoTypeEnum;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.jms.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -23,7 +24,7 @@ public class TrainSubscriber implements Closeable {
 
     // BUSINESS
     @Inject
-//    @Named("BordeauxTopic")
+    @Named("BordeauxTopic")
 //    @Named("ParisTopic")
 //    @Named("AmiensTopic")
 //    @Named("LilleTopic")

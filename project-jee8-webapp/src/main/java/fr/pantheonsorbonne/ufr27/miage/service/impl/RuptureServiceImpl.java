@@ -113,6 +113,7 @@ public class RuptureServiceImpl implements RuptureService {
                         latestNewDate.plusMinutes(10)
                 );
 
+                // Retarder toutes les dessertes à partir de fromThis
                 DesserteReelle fromThis = trajet.getDesserteReelleOfGare(c.getGare().getId());
                 for (DesserteReelle desserteReelle : trajet.getDesserteReelles()) {
                     if (desserteReelle.getSeq() >= fromThis.getSeq()) {
@@ -123,7 +124,6 @@ public class RuptureServiceImpl implements RuptureService {
                         );
                     }
                 }
-
             }
 
         }
