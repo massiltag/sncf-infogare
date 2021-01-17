@@ -127,7 +127,7 @@ public class TrainServiceImpl implements TrainService {
 			if (desserteReelle.getSeq() == dessertes.size())
 				infoDTO.setInfoType(InfoTypeEnum.ARRIVAL.value());
 			else
-			// Gare intermédiaire, envoyer un DTO JAXB Passage
+			// Gare intermédiaire, envoyer un DTO JAXB Transit
 				infoDTO.setInfoType(InfoTypeEnum.TRANSIT.value());
 
 			// Envoyer l'information
@@ -148,14 +148,14 @@ public class TrainServiceImpl implements TrainService {
 
 
 	/*
-     * TODO : Inclure JMS pour transmettre le retard aux InfoGares
+     * Envoie le retard calculé + un retard selon le type de perturbation
      */
 	@Override
-	public void processDelayWithCondition(LiveInfo liveInfo, int id, String condition) {
-		log.info("Received Delay condition of train " + id);
-		log.info("Delay condition " + condition);
+	public void processDelayWithCondition(LiveInfo liveInfo, int trajetId, String condition) {
+		log.info("Received Delay condition of train " + trajetId);
+		log.info("Delay condition = " + condition);
 
-		Trajet trajet = trajetDAO.find(id);
+		Trajet trajet = trajetDAO.find(trajetId);
 
 		log.info("Got train : " + trajet.toString());
 
@@ -178,9 +178,7 @@ public class TrainServiceImpl implements TrainService {
 				log.info("Delay with Condition is " + finalDelay.toMinutes() + " min");
 				break;
 			case "Seisme_DANGER" :
-				finalDelay = null;
-				trajetDAO.delete(trajet);
-				log.info("Train " + id + " was canceled due to earthquake.");
+				finalDelay = delay.plusMinutes(100);
 				break;
 			default :
 				finalDelay = delay.plus(Duration.ofMinutes(5));
@@ -200,7 +198,27 @@ public class TrainServiceImpl implements TrainService {
 				trajetDAO.setDessertesReelles(trajet, newDesserteInfo);
 			}
 		}
+		
+		sendDisruptions(trajet, condition);
 	}
+	
+	public void sendDisruptions(Trajet trajet, String disruptionType) {
+    	List<DesserteReelle> dessertes = desserteReelleDAO.getAllOfTrajet(trajet.getId());
 
-
+		// Itérer sur les gares
+    	for (DesserteReelle desserteReelle : dessertes) {
+    		// Construire l'information
+    		InfoDTO infoDTO = InfoDTO.builder()
+					.infoType(InfoTypeEnum.DISRUPTION.value())
+					.disruptionType(disruptionType)
+					.trainId(trajet.getId())
+					.trainName(trajet.getName())
+					.trainType(trajet.getType())
+					.timestamp(String.valueOf(desserteReelle.getArrivee()))
+					.build();
+		    		
+			// Envoyer l'information			
+			infogareSenderService.send(desserteReelle.getGare().getCode(), infoDTO);
+		}
+	}
 }

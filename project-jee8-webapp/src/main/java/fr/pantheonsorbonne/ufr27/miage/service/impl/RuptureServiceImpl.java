@@ -27,6 +27,7 @@ import static fr.pantheonsorbonne.ufr27.miage.util.DateUtil.localDateTimeToDate;
 @Slf4j
 public class RuptureServiceImpl implements RuptureService {
 
+    // Set to 5 for testing, else 50
     private static int TOLERATED_NB_RUPTURES = 5;
 
     @Inject
@@ -112,6 +113,7 @@ public class RuptureServiceImpl implements RuptureService {
                         latestNewDate.plusMinutes(10)
                 );
 
+                // Retarder toutes les dessertes à partir de fromThis
                 DesserteReelle fromThis = trajet.getDesserteReelleOfGare(c.getGare().getId());
                 for (DesserteReelle desserteReelle : trajet.getDesserteReelles()) {
                     if (desserteReelle.getSeq() >= fromThis.getSeq()) {
@@ -122,7 +124,6 @@ public class RuptureServiceImpl implements RuptureService {
                         );
                     }
                 }
-
             }
 
         }

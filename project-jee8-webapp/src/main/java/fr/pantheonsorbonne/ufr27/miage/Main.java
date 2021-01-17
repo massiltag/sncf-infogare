@@ -87,7 +87,7 @@ public class Main {
 	}
 
 	/**
-	 * Main method.beanbeanbeanbean
+	 * Main method
 	 * 
 	 * @param args
 	 * @throws IOException

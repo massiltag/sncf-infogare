@@ -38,7 +38,9 @@ public class TrainEndpoint {
     @POST
     @Consumes(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("{id}/{condition}")
-    public Response postDelayWithCondition(LiveInfo liveInfo, @PathParam("id") int id, @PathParam("condition") String conditions) {
+    public Response postDelayWithCondition(LiveInfo liveInfo,
+                                           @PathParam("id") int id,
+                                           @PathParam("condition") String conditions) {
         trainService.processDelayWithCondition(liveInfo, id, conditions);
         return Response.status(200, "Train delayed.").build();
     }
