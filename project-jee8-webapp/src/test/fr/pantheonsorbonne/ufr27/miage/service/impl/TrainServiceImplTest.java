@@ -47,7 +47,7 @@ class TrainServiceImplTest {
     }
 
     @Test
-    void processLiveInfo() {
+    void should_delay_train() {
         // GIVEN
         Gare gare = Gare.builder().nom("Bordeaux Saint-Jean").code("BDX").build();
         Gare gare2 = Gare.builder().nom("Paris Montparnasse").code("PAR").build();

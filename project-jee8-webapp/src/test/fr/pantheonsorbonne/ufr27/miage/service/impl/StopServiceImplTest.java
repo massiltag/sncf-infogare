@@ -220,7 +220,7 @@ class StopServiceImplTest {
         /*
             TGV 2
                 - BDX 11h00
-                - PAR /////
+                - PAR ///// ----> 14h30
                 - LIL 14h00
          */
         Trajet tgv2 = Trajet.builder()
