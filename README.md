@@ -39,7 +39,7 @@ Containing :
     - `infoType` : Type of the information sent by the Infocenter (see `InfoTypeEnum`).
     - `trainId` : ID of the train concerned by the DTO.
     - `trainName` : Name of the train concerned by the DTO.
-    - `trainName` : Type of the train concerned by the DTO.
+    - `trainType` : Type of the train concerned by the DTO.
     - `timestamp` : Time the train arrives at this station.
     - In case of disruption, the field `disruptionType` is also filled (see `EnumConditions`).
     
@@ -137,12 +137,12 @@ certain circumstances.
 
 ## The Terminal (Infogare) : `project-jee8-jms-subscriber`
 
-This project consumes `InfoDTO` produced by the Infocenter. Has a TrainSubscruber which is responsible of 
+This project consumes `InfoDTO` produced by the Infocenter. Has a TrainSubscriber which is responsible of 
 Unmarshalling the DTO, filtering and printing it as a formatted output.  
 The JMSProducer provides the topic instance to be injected into the subscriber.  
 The data is kept in a HashMap (`Map<Integer, InfoDTO>`) of key `trainId`, which ensures us that we have 
 only one information about a given train at a time.  
-Preview :  
+Preview : (looks much better in IntelliJ <3)  
 ![infogare](./files/img/infogare.png)  
 
 
