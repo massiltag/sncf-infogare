@@ -98,6 +98,7 @@ public class TERServiceImpl implements TERService {
                                     .plus(delay.toSeconds() + 600, ChronoUnit.SECONDS)
                     );
 
+                    dr.setArrivee(newDesserteDate);
                     desserteReelleDAO.setDesservi(dr, new Object[]{true, newDesserteDate});
                 }
 
