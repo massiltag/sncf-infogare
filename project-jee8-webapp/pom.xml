@@ -163,8 +163,20 @@
 			<artifactId>artemis-server</artifactId>
 			<version>2.10.1</version>
 		</dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
 
-	</dependencies>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+			<scope>test</scope>
+		</dependency>
+    </dependencies>
 	<build>
 		<finalName>project-jee8-webapp</finalName>
 		<plugins>
