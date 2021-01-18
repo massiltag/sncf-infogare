@@ -67,7 +67,7 @@ public class StopServiceImpl implements StopService {
 
         Trajet nextTrajet = trajetDAO.find(nearestTrainId);
         List<DesserteReelle> dr_toUpdate = desserteReelleDAO.getAllOfTrajet(nearestTrainId).stream()
-                .filter(d -> d.getSeq() > gareIndex)
+                .filter(d -> d.getSeq() >= gareIndex)
                 .filter(d -> !d.isDesservi())
                 .collect(Collectors.toList());
 
@@ -85,6 +85,8 @@ public class StopServiceImpl implements StopService {
                     ).plus(d.toSeconds()/2, ChronoUnit.SECONDS)
             );
 
+            dr.setDesservi(true);
+            dr.setArrivee(newDesserteDate);
             desserteReelleDAO.setDesservi(dr, new Object[]{true, newDesserteDate});
         }
     }
