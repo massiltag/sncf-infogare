@@ -194,7 +194,14 @@ FROM CORRESPONDANCE, TRAJET, PASSAGER, GARE
 WHERE CORRESPONDANCE.TRAJET_ID=TRAJET.ID
   AND PASSAGER.CORRESPONDANCE_ID=CORRESPONDANCE.ID
   AND CORRESPONDANCE.GARE_ID=GARE.ID
-```  
+```
+
+---
+# Code quality
+
+Business logic code (Service Layer) is 80% Covered by unit tests.
+![coverage](./files/img/coverage.png)
+![tests](./files/img/tests.png)
 
 
 # Contribution

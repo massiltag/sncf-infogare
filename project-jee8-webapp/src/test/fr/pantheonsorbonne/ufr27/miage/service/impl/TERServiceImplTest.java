@@ -44,12 +44,18 @@ class TERServiceImplTest {
 
     @Test
     void should_wait_for_TGV() {
-        //GIVEN
+        // GIVEN
         Gare gare = Gare.builder().id(1).nom("Bordeaux Saint-Jean").code("BDX").build();
         Gare gare2 = Gare.builder().id(2).nom("Paris Montparnasse").code("PAR").build();
         Gare gare3 = Gare.builder().id(3).nom("Gare d'Amiens").code("AMS").build();
         Gare gare4 = Gare.builder().id(4).nom("Lille Flandres").code("LIL").build();
 
+        /*
+            TGV 1
+                - BDX 12h
+                - PAR 13h devient ---> 14h (retard)
+                - AMS 14h devient ---> 15h (retard)
+         */
         Trajet trajet1 = Trajet.builder()
                 .id(1)
                 .desserteTheoriques(new ArrayList<>())
@@ -94,6 +100,11 @@ class TERServiceImplTest {
         );
         trajet1.addDesserteReelles(dr1);
 
+        /*
+            TER
+                - AMS 14h30
+                - LIL 15h30
+         */
         Trajet trajet2 = Trajet.builder()
                 .id(2)
                 .desserteTheoriques(new ArrayList<>())
@@ -138,7 +149,7 @@ class TERServiceImplTest {
         Duration delay = Duration.ofMinutes(60);
 
 
-        //WHEN
+        // WHEN
         when(gareDAO.getGareBySeqNumber(trajet1, 1)).thenReturn(gare);
         when(gareDAO.getGareBySeqNumber(trajet1, 2)).thenReturn(gare2);
         when(gareDAO.getGareBySeqNumber(trajet1, 3)).thenReturn(gare3);
@@ -153,7 +164,7 @@ class TERServiceImplTest {
 
         TERService.waitForThisTrainWhenTER(trajet1, liveInfo, delay);
 
-        //THEN
+        // THEN
         assertEquals(
                 localDateTimeToDate(LocalDateTime.of(2020, 01, 01, 15, 40)),
                 trajet2.getDesserteReelleNo(1).getArrivee()

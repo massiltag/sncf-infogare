@@ -18,9 +18,11 @@ public class Correspondance {
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
+    // Prochain trajet du passager
     @ManyToOne
     Trajet trajet;
 
+    // Passager concerné par cette correspondance
     @OneToOne
     Passager passager;
 

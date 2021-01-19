@@ -68,6 +68,8 @@ public class RuptureServiceImpl implements RuptureService {
             ) {
                 // Alors mettre la correspondance en rupture et mettre à jour l'horaire
                 // du train de correspondance avec l'horaire du train (trajet) + 10 minutes
+                correspondance.setRupture(true);
+                correspondance.setNewDate(trajet.getDesserteReelleOfGare(correspondance.getGare().getId()).getArrivee());
                 correspondanceDAO.update(correspondance,
                         new Object[]{
                                 true,
@@ -118,6 +120,8 @@ public class RuptureServiceImpl implements RuptureService {
                 for (DesserteReelle desserteReelle : trajet.getDesserteReelles()) {
                     if (desserteReelle.getSeq() >= fromThis.getSeq()) {
                         LocalDateTime initialArrivee = dateToLocalDateTime(desserteReelle.getArrivee());
+                        desserteReelle.setDesservi(true);
+                        desserteReelle.setArrivee(localDateTimeToDate(initialArrivee.plus(delay)));
                         desserteReelleDAO.setDesservi(
                                 desserteReelle,
                                 new Object[]{true, localDateTimeToDate(initialArrivee.plus(delay))}
