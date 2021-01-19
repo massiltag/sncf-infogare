@@ -160,6 +160,7 @@ BDX = "Bordeaux Saint-Jean"; PAR = "Paris Montparnasse"; AMS = "Gare d'Amiens"; 
 ---
 # How to launch
 
+## Steps
   - `mvn clean install` in root
   - Run `Main.main()` in `project-jee8-webapp`
   - Run `InfoGareApp.main()` in `project-jee8-jms-subscriber` five times, each time by uncommenting 
@@ -171,6 +172,11 @@ BDX = "Bordeaux Saint-Jean"; PAR = "Paris Montparnasse"; AMS = "Gare d'Amiens"; 
       - `2 - Init` to send first data to the Infogares, you can now check train states in the `jms-subscriber` consoles.
       - `3 - LiveInfo` to send live info, you can now check the changes in the Infogare screens.
 
+## Additional information
+We used [Project Lombok](https://projectlombok.org) in this project to help us reduce boilerplate code like getters, setters etc.  
+Make sure you enable **Annotation Processing**, and that you have it in your compile classpath on Eclipse or have installed the 
+[Lombok IntelliJ Plugin](https://plugins.jetbrains.com/plugin/6317-lombok).  
+Baeldung : [Setting up Lombok with Eclipse and IntelliJ](https://plugins.jetbrains.com/plugin/6317-lombok)
 
 ---
 # Useful SQL
