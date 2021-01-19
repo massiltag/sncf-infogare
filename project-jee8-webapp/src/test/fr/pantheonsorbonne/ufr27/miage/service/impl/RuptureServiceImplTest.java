@@ -41,6 +41,7 @@ class RuptureServiceImplTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    // Enough ruptures
     @Test
     void should_delay_next_train() {
         // GIVEN
@@ -233,6 +234,7 @@ class RuptureServiceImplTest {
 
     }
 
+    // Not enough ruptures
     @Test
     void should_not_delay_next_train() {
         // GIVEN
@@ -312,7 +314,7 @@ class RuptureServiceImplTest {
                         .build(),
                 DesserteReelle.builder()
                         .gare(gare3)
-                        .arrivee(localDateTimeToDate(LocalDateTime.of(2020, 01, 01, 14, 20)))
+                        .arrivee(localDateTimeToDate(LocalDateTime.of(2020, 01, 01, 17, 20)))
                         .desservi(true)
                         .build()
         );
@@ -341,9 +343,9 @@ class RuptureServiceImplTest {
         ruptureService.processRuptureCorrespondance(trajet3);
 
         // THEN
-        assertFalse(c6.isRupture());
+        assertTrue(c6.isRupture());
 
-        assertNull(c6.getNewDate());
+        assertNotNull(c6.getNewDate());
         assertEquals(
                 localDateTimeToDate(LocalDateTime.of(2020, 01, 01, 14, 30)),
                 trajet2.getDesserteReelleNo(1).getArrivee()

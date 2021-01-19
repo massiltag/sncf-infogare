@@ -99,13 +99,17 @@ certain circumstances.
   Contains the implementation of :
   > On ne retardera le train que si le nombre de passagers ayant réservés en rupture de
   > correspondance est > 50.
-
-  See JavaDoc and code comments for more details.
+  
+  Note : If trains A, B and C are delayed and cause more than 50 connection breaks (Ruptures) on a train D 
+  in a station G, the train D will be delayed to the arrival time of the latest train which arrives at G.
 
 
 - `InfogareSenderService` :
   Is responsible of sending the `InfoDTO` to the Infogares, uses the right JMS Publisher according to the `gareId` field.
   JMSPublishers are classes which handle the JAXB Marshalling of the DTO and send it to the topic injected in them.
+
+
+  See JavaDoc and code comments for more details about services.
   
 ### Persistence layer
   
