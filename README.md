@@ -199,7 +199,7 @@ WHERE CORRESPONDANCE.TRAJET_ID=TRAJET.ID
 ---
 # Code quality
 
-Business logic code (Service Layer) is 80% Covered by unit tests.  
+Business logic code (Service Layer) is 80% covered by unit tests.  
 ![tests](./files/img/tests.png)  
 ![coverage](./files/img/coverage.png)  
 CI with Bitbucket pipelines  
