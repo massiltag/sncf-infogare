@@ -18,12 +18,20 @@ public class TrainEndpoint {
     @Inject
     TrainService trainService;
 
+    /**
+     * <p>
+     *     Envoi des informations de localisation en direct par le train.
+     * </p>
+     * @param liveInfo  DTO d'information en direct
+     * @param id        Identifiant du train en BDD
+     * @return          HTTP 200 OK
+     */
     @POST
     @Consumes(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("{id}/live")
     public Response postLiveInfo(LiveInfo liveInfo, @PathParam("id") int id) {
         trainService.processLiveInfo(liveInfo, id);
-        return Response.status(201, "Info received.").build();
+        return Response.status(200, "Info received.").build();
     }
 
 

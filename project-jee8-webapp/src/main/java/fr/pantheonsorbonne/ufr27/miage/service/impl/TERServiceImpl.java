@@ -83,6 +83,7 @@ public class TERServiceImpl implements TERService {
 
             if (trajets.isEmpty()) continue;
 
+            // Retarder les trajets à partir de cette gare
             for (Trajet t : trajets) {
                 if (affectedTrainIds.contains(t.getId())) continue;
 

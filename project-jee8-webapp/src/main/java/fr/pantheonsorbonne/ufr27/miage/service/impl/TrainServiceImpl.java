@@ -96,7 +96,7 @@ public class TrainServiceImpl implements TrainService {
         	terService.waitForThisTrainWhenTER(trajet, liveInfo, delay);
 		}
 
-        // Comptabiliser la rupture de correspondance si retard a moins de 2h30 de retard
+        // Comptabiliser la rupture de correspondance si train a moins de 2h30 de retard
 		if (delay.toMinutes() <= 150) {
 			ruptureService.processRuptureCorrespondance(trajet);
 		}
@@ -138,7 +138,8 @@ public class TrainServiceImpl implements TrainService {
 
 	/**
 	 * <p>
-	 *     Appelée au lancement de l'application, sert à envoyer les informations initiales aux infogares.
+	 *     Sert à notifier les infogares des nouvelles données en base.
+	 *     Également appelée au lancement de l'application pour envoyer les informations initiales aux infogares.
 	 * </p>
 	 */
 	public void updateInfogares() {

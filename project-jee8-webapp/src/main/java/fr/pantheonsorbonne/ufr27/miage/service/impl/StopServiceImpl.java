@@ -66,6 +66,8 @@ public class StopServiceImpl implements StopService {
         if (nearestTrainId == 0) return;
 
         Trajet nextTrajet = trajetDAO.find(nearestTrainId);
+
+        // Filtre : ne garder que les dessertes concernées
         List<DesserteReelle> dr_toUpdate = desserteReelleDAO.getAllOfTrajet(nearestTrainId).stream()
                 .filter(d -> d.getSeq() >= gareIndex)
                 .filter(d -> !d.isDesservi())
@@ -73,6 +75,7 @@ public class StopServiceImpl implements StopService {
 
         if (dr_toUpdate.isEmpty()) return;
 
+        // Appliquer l'arrêt exceptionnel
         for (DesserteReelle dr : dr_toUpdate) {
             Duration d = Duration.between(
                     dateToLocalDateTime(nextTrajet.getDesserteReelleNo(dr.getSeq() - 1).getArrivee()),
