@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6cf7309e-54d7-41f5-b50c-3790dc57609c",
+		"_postman_id": "88f38afd-06e0-47c5-bd43-6fe98d9a4d57",
 		"name": "API WEBAPP",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -99,7 +99,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/train/delay/live/1/PanneElec",
+							"raw": "http://localhost:8080/train/1/PanneElec",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -107,8 +107,6 @@
 							"port": "8080",
 							"path": [
 								"train",
-								"delay",
-								"live",
 								"1",
 								"PanneElec"
 							]
@@ -121,7 +119,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "d7cdb713-a79e-4643-8c79-df92569cc917",
+						"id": "10566c90-bfcb-46fc-9275-f03729aeb437",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -131,7 +129,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "472aa9c9-3993-4eaf-ab64-8c0d86810f1e",
+						"id": "fa93225c-dad9-40c5-abb2-174ebe734e5c",
 						"type": "text/javascript",
 						"exec": [
 							""
