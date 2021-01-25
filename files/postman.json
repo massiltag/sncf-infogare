@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "88f38afd-06e0-47c5-bd43-6fe98d9a4d57",
+		"name": "API WEBAPP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "DB",
+			"item": [
+				{
+					"name": "1 - PopulateDB",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/db/populate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"db",
+								"populate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2 - Init",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/db/init",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"db",
+								"init"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Train",
+			"item": [
+				{
+					"name": "3 - LiveInfo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lastGareIndex\": 1,\n    \"nextGareIndex\": 2,\n    \"percentage\": 50,\n    \"timestamp\": \"2020-01-01 12:00\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/train/1/live",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"train",
+								"1",
+								"live"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DelayWithCondition",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lastGareIndex\": 1,\n    \"nextGareIndex\": 2,\n    \"percentage\": 50,\n    \"timestamp\": \"2020-01-01 12:00\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/train/1/PanneElec",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"train",
+								"1",
+								"PanneElec"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "10566c90-bfcb-46fc-9275-f03729aeb437",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa93225c-dad9-40c5-abb2-174ebe734e5c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
